@@ -1,18 +1,18 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.mwalter.mavendependencychecker</id>
+    <id>ch.newinstance.plugin</id>
     <name>MavenDependencyChecker</name>
-    <vendor>mwalter</vendor>
+    <vendor>Marc Walter</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.mwalter.mavendependencychecker.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.mwalter.mavendependencychecker.services.MyProjectService"/>
-    </extensions>
+    <actions>
+        <action id="ch.newinstance.plugin.mavendependencychecker.action.ContextDialogAction"
+                class="ch.newinstance.plugin.mavendependencychecker.action.ContextDialogAction"
+                text="Check for Maven Dependency Updates" description="Checks all Maven project dependencies for updates"
+                icon="AllIcons.Actions.PreviousOccurence">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+    </actions>
 
-    <applicationListeners>
-        <listener class="com.github.mwalter.mavendependencychecker.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>

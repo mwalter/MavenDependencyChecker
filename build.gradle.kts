@@ -32,6 +32,18 @@ intellij {
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+
+    dependencies {
+        implementation("io.projectreactor:reactor-core:3.4.12")
+        implementation("io.projectreactor.netty:reactor-netty:1.0.13")
+        implementation("org.json:json:20210307")
+        implementation("org.apache.maven:maven-model:3.8.4")
+
+        testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+        testImplementation("io.projectreactor:reactor-test:3.4.12")
+
+        downloadSources
+    }
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
