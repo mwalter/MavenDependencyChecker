@@ -7,8 +7,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <actions>
-        <action id="ch.newinstance.plugin.mavendependencychecker.action.ContextDialogAction"
-                class="ch.newinstance.plugin.mavendependencychecker.action.ContextDialogAction"
+        <action id="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"
+                class="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"
                 text="Check for Maven Dependency Updates" description="Checks all Maven project dependencies for updates"
                 icon="AllIcons.Actions.PreviousOccurence">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
