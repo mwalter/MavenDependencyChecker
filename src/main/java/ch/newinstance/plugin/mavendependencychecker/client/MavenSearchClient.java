@@ -12,13 +12,6 @@ public class MavenSearchClient {
 
     private final HttpClient searchClient = HttpClient.create();
 
-//    public Flux<String> executeSearchQueries(List<String> searchQueries) {
-//        return Flux.fromIterable(searchQueries)
-//                .flatMap(this::executeSearchQuery)
-//                .collectList()
-//                .flatMapMany(Flux::fromIterable);
-//    }
-
     public List<String> executeSearchQueries(List<String> searchQueries) {
         return Flux.fromIterable(searchQueries)
                 .flatMap(this::executeSearchQuery)

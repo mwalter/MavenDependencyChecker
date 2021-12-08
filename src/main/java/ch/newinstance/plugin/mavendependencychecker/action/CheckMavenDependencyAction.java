@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class CheckMavenDependencyAction extends AnAction {
         List<DependencyUpdate> dependenciesToCheck = convertDependencies(dependencies);
 
         if (dependenciesToCheck.isEmpty()) {
-            Messages.showInfoMessage("No project dependencies found in POM file.\nUnable to check for updates.", "No Maven Project Dependencies");
+            Messages.showInfoMessage("No project dependencies found in POM file.\nNothing to check.", "No Maven Project Dependencies");
             return;
         }
 
@@ -65,7 +66,7 @@ public class CheckMavenDependencyAction extends AnAction {
         }
 
         String message = createMessage(dependenciesToUpdate);
-        Messages.showWarningDialog("You should consider upgrading the following project dependencies:\n\n" + message, "Outdated Dependencies Found");
+        Messages.showWarningDialog("You should consider upgrading the following project dependencies:\n\n" + message, "Outdated Dependencies");
     }
 
     private List<Dependency> extractDependencies(String xml) {
@@ -87,8 +88,7 @@ public class CheckMavenDependencyAction extends AnAction {
 
         Map<String, String> libraryMap = new HashMap<>();
         ModuleRootManager.getInstance(module).orderEntries().forEachLibrary(library -> {
-            String libraryName = library.getName();
-            String[] libraryParts = StringUtils.split(libraryName, ":");
+            String[] libraryParts = StringUtils.split(library.getName(), ":");
             libraryMap.put(libraryParts[1].trim() + ":" + libraryParts[2].trim(), libraryParts[3].trim());
             return true;
         });
@@ -100,8 +100,13 @@ public class CheckMavenDependencyAction extends AnAction {
     }
 
     private String createMessage(List<DependencyUpdateResult> dependenciesToUpdate) {
+        List<DependencyUpdateResult> sortedDependenciesToUpdate = dependenciesToUpdate.stream()
+                .sorted(Comparator.comparing(DependencyUpdateResult::getGroupId)
+                        .thenComparing(DependencyUpdateResult::getArtifactId))
+                .collect(Collectors.toList());
+
         StringBuilder message = new StringBuilder();
-        for (DependencyUpdateResult dependency: dependenciesToUpdate) {
+        for (DependencyUpdateResult dependency: sortedDependenciesToUpdate) {
             message.append(dependency.getGroupId());
             message.append(":");
             message.append(dependency.getArtifactId());
