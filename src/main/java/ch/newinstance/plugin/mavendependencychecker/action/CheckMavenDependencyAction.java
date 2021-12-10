@@ -1,8 +1,8 @@
 package ch.newinstance.plugin.mavendependencychecker.action;
 
 import ch.newinstance.plugin.mavendependencychecker.client.MavenSearchClient;
-import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdate;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
+import ch.newinstance.plugin.mavendependencychecker.util.MessageCreator;
 import ch.newinstance.plugin.mavendependencychecker.util.QueryBuilder;
 import ch.newinstance.plugin.mavendependencychecker.util.VersionComparator;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -23,11 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CheckMavenDependencyAction extends AnAction {
 
@@ -44,16 +42,15 @@ public class CheckMavenDependencyAction extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent event) {
         PsiFile pomFile = event.getData(CommonDataKeys.PSI_FILE);
         Map<String, String> moduleDependencies = retrieveModuleDependencies(pomFile);
-        List<Dependency> dependencies = extractDependencies(pomFile.getText());
-        List<DependencyUpdate> dependenciesToCheck = convertDependencies(dependencies);
+        List<Dependency> dependencies = parseDependencies(pomFile.getText());
 
-        if (dependenciesToCheck.isEmpty()) {
+        if (dependencies.isEmpty()) {
             Messages.showInfoMessage("No project dependencies found in POM file.\nNothing to check.", "No Maven Project Dependencies");
             return;
         }
 
         QueryBuilder queryBuilder = new QueryBuilder();
-        List<String> queries = queryBuilder.buildQueries(dependenciesToCheck);
+        List<String> queries = queryBuilder.buildQueries(dependencies);
 
         MavenSearchClient searchClient = new MavenSearchClient();
         VersionComparator versionComparator = new VersionComparator(moduleDependencies);
@@ -65,11 +62,11 @@ public class CheckMavenDependencyAction extends AnAction {
             return;
         }
 
-        String message = createMessage(dependenciesToUpdate);
-        Messages.showWarningDialog("You should consider upgrading the following project dependencies:\n\n" + message, "Outdated Dependencies");
+        String message = MessageCreator.createResultMessage(dependenciesToUpdate);
+        Messages.showWarningDialog("You should consider upgrading the following project dependencies:\n" + message, "Outdated Dependencies");
     }
 
-    private List<Dependency> extractDependencies(String xml) {
+    private List<Dependency> parseDependencies(String xml) {
         if (StringUtils.isBlank(xml)) {
             return Collections.emptyList();
         }
@@ -95,27 +92,4 @@ public class CheckMavenDependencyAction extends AnAction {
         return libraryMap;
     }
 
-    private List<DependencyUpdate> convertDependencies(List<Dependency> dependencies) {
-        return dependencies.stream().map(dependency -> new DependencyUpdate(dependency.getGroupId(), dependency.getArtifactId())).collect(Collectors.toList());
-    }
-
-    private String createMessage(List<DependencyUpdateResult> dependenciesToUpdate) {
-        List<DependencyUpdateResult> sortedDependenciesToUpdate = dependenciesToUpdate.stream()
-                .sorted(Comparator.comparing(DependencyUpdateResult::getGroupId)
-                        .thenComparing(DependencyUpdateResult::getArtifactId))
-                .collect(Collectors.toList());
-
-        StringBuilder message = new StringBuilder();
-        for (DependencyUpdateResult dependency: sortedDependenciesToUpdate) {
-            message.append(dependency.getGroupId());
-            message.append(":");
-            message.append(dependency.getArtifactId());
-            message.append(":");
-            message.append(dependency.getCurrentVersion());
-            message.append(" > ");
-            message.append(dependency.getLatestVersion());
-            message.append( "\n");
-        }
-        return message.toString();
-    }
 }

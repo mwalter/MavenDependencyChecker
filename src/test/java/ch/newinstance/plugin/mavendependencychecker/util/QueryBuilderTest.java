@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collections;
 import java.util.List;
 
-import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdate;
+import org.apache.maven.model.Dependency;
 import org.junit.jupiter.api.Test;
 
 public class QueryBuilderTest {
@@ -21,17 +21,24 @@ public class QueryBuilderTest {
 
     @Test
     public void buildQueries_oneDependency_shouldReturnOneQuery() {
-        DependencyUpdate dependencyUpdate = new DependencyUpdate("org.apache.commons", "commons-lang3");
-        List<String> result = testee.buildQueries(List.of(dependencyUpdate));
+        Dependency dependency = new Dependency();
+        dependency.setGroupId("org.apache.commons");
+        dependency.setArtifactId("commons-lang3");
+        List<String> result = testee.buildQueries(List.of(dependency));
         assertEquals(1, result.size());
         assertEquals("g:%20org.apache.commons%20+AND+a:%20commons-lang3%20", result.get(0));
     }
 
     @Test
     public void buildQueries_twoDependencies_shouldReturnTwoQueries() {
-        DependencyUpdate dependencyUpdate1 = new DependencyUpdate("org.apache.commons", "commons-lang3");
-        DependencyUpdate dependencyUpdate2 = new DependencyUpdate("org.apache.commons", "commons-collections4");
-        List<String> result = testee.buildQueries(List.of(dependencyUpdate1, dependencyUpdate2));
+        Dependency dependency1 = new Dependency();
+        dependency1.setGroupId("org.apache.commons");
+        dependency1.setArtifactId("commons-lang3");
+        Dependency dependency2 = new Dependency();
+        dependency2.setGroupId("org.apache.commons");
+        dependency2.setArtifactId("commons-collections4");
+
+        List<String> result = testee.buildQueries(List.of(dependency1, dependency2));
         assertEquals(2, result.size());
     }
     

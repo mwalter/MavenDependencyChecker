@@ -1,6 +1,6 @@
 package ch.newinstance.plugin.mavendependencychecker.util;
 
-import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdate;
+import org.apache.maven.model.Dependency;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ public class QueryBuilder {
     private static final String AND = "+AND+";
     private static final String QUOTATION = "%20";
 
-    public List<String> buildQueries(List<DependencyUpdate> dependencies) {
+    public List<String> buildQueries(List<Dependency> dependencies) {
         return dependencies.stream().map(dependency -> buildQuery(dependency.getGroupId(), dependency.getArtifactId())).collect(Collectors.toList());
     }
 
