@@ -1,15 +1,35 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>ch.newinstance.plugin</id>
-    <name>MavenDependencyChecker</name>
+    <id>ch.newinstance.plugin.mavendependencychecker</id>
+    <name>Maven Dependency Checker</name>
+    <version>1.0.0</version>
     <vendor>Marc Walter</vendor>
+
+    <description>
+        <![CDATA[
+            Shows all available new versions of the Maven dependencies used by your project.<br/>
+            <li>
+              <ul>No need to add the versions-maven-plugin to your POM build configuration</ul>
+              <ul>No need to look up every dependency manually at Maven Central</ul>
+            </li>
+            <br/>
+            Caveats:<br/>
+            <li>
+              <ul>Only dependencies available at Maven Central will be checked for updates</li>
+              <ul>The plugin won't update your dependencies by changing your POM file</li>
+            </li>
+        ]]>
+    </description>
+
+    <change-notes>Initial release of the plugin.</change-notes>
 
     <depends>com.intellij.modules.platform</depends>
 
     <actions>
         <action id="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"
                 class="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"
-                text="Check for Maven Dependency Updates" description="Checks all Maven project dependencies for updates"
+                text="Check for Maven Dependency Updates"
+                description="Checks all Maven project dependencies for updates"
                 icon="AllIcons.Actions.PreviousOccurence">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
