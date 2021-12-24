@@ -41,6 +41,8 @@ intellij {
 
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
         testImplementation("io.projectreactor:reactor-test:3.4.12")
+        testImplementation("org.mockito:mockito-core:4.2.0")
+        testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
 
         downloadSources
     }
