@@ -48,6 +48,9 @@ public class DependencyParser {
         Map<String, String> libraryMap = new HashMap<>();
         ModuleRootManager.getInstance(module).orderEntries().forEachLibrary(library -> {
             String[] libraryParts = StringUtils.split(library.getName(), ":");
+            if (libraryParts == null || libraryParts.length < 4) {
+                return false;
+            }
             libraryMap.put(libraryParts[1].trim() + ":" + libraryParts[2].trim(), libraryParts[3].trim());
             return true;
         });
