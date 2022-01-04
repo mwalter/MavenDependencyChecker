@@ -7,21 +7,14 @@
 
     <description>
         <![CDATA[
-            Shows all available new versions of the Maven dependencies used by your project.<br/>
-            <li>
-              <ul>No need to add the versions-maven-plugin to your POM build configuration</ul>
-              <ul>No need to look up every dependency manually at Maven Central</ul>
-            </li>
-            <br/>
-            Caveats:<br/>
-            <li>
-              <ul>Only dependencies available at Maven Central will be checked for updates</li>
-              <ul>The plugin won't update your dependencies by changing your POM file</li>
-            </li>
+            Shows all available new versions of the Maven dependencies used by the project.<br/><br/>
+            This plugin does NOT modify the project's POM file. It just visualizes the different versions
+            if there are any new versions available. Also keep in mind that only dependencies available
+            at Maven Central will be checked for updates.
         ]]>
     </description>
 
-    <change-notes>Initial release of the plugin.</change-notes>
+    <change-notes>Initial release.</change-notes>
 
     <depends>com.intellij.modules.platform</depends>
 
