@@ -13,7 +13,7 @@ which can or should be updated. You'll see the version of the dependencies you u
 
 ## Usage
 Select the Maven POM file (pom.xml) in the project explorer view of IntelliJ IDEA. Right-click the file and choose
-"Check for Maven Dependency Updates".
+"Check for Maven Dependency Updates" from the context menu.
 <!-- Plugin description end -->
 
 ## Installation
