@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>ch.newinstance.plugin.mavendependencychecker</id>
     <name>Maven Dependency Checker</name>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <vendor>Marc Walter</vendor>
 
     <description>

@@ -1,7 +1,13 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# MavenDependencyChecker Changelog
+# Maven Dependency Checker Changelog
 
 ## [Unreleased]
-### Added
-- Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+
+## [1.0.0] - 2022-01-31
+### Initial release
+
+## [1.0.1] - 2022-02-02
+### Fixed
+- IDE error occurring when updating the state of the plugin.
+
