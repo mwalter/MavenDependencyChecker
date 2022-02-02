@@ -24,8 +24,9 @@ public class CheckMavenDependencyAction extends AnAction {
     @Override
     public void update(@NotNull AnActionEvent event) {
         super.update(event);
-        String psiFileName = event.getData(CommonDataKeys.PSI_FILE).getName();
-        event.getPresentation().setEnabledAndVisible(psiFileName.equals(POM_FILE));
+        PsiFile psiFile = event.getData(CommonDataKeys.PSI_FILE);
+        boolean visible = psiFile != null && !psiFile.isDirectory() && psiFile.getName().equals(POM_FILE);
+        event.getPresentation().setEnabledAndVisible(visible);
     }
 
     @Override
