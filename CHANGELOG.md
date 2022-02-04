@@ -11,3 +11,10 @@
 ### Fixed
 - IDE error occurring when updating the state of the plugin.
 
+## [1.1.0] - 2022-02-06
+### Added
+- Option to copy the results to the system clipboard.
+- Plugin icon next to the context menu entry.
+### Changed
+- Shortened the text of the context menu entry to execute the plugin.
+- Improved the plugin description.

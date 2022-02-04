@@ -2,13 +2,13 @@
 <idea-plugin>
     <id>ch.newinstance.plugin.mavendependencychecker</id>
     <name>Maven Dependency Checker</name>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <vendor>Marc Walter</vendor>
 
     <description>
         <![CDATA[
             Shows all available new versions of the Maven dependencies used by the project.<br/><br/>
-            This plugin does NOT modify the project's POM file. It just visualizes the different versions
+            This plugin does NOT modify the project's POM file. It just displays the different versions
             if there are any new versions available. Also keep in mind that only dependencies available
             at Maven Central will be checked for updates.
         ]]>
@@ -21,9 +21,9 @@
     <actions>
         <action id="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"
                 class="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"
-                text="Check for Maven Dependency Updates"
-                description="Checks all Maven project dependencies for updates"
-                icon="AllIcons.Actions.PreviousOccurence">
+                text="Check Maven Dependencies"
+                description="Checks if there are updates available for all Maven project dependencies"
+                icon="icons/pluginIcon.png">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
     </actions>

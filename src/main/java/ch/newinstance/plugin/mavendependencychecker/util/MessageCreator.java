@@ -18,7 +18,6 @@ public class MessageCreator {
         StringBuilder message = new StringBuilder();
         for (Iterator<DependencyUpdateResult> iter = sortedDependenciesToUpdate.iterator(); iter.hasNext(); ) {
             DependencyUpdateResult dependency = iter.next();
-            message.append( "\n");
             message.append(dependency.getGroupId());
             message.append(":");
             message.append(dependency.getArtifactId());
@@ -26,6 +25,9 @@ public class MessageCreator {
             message.append(dependency.getCurrentVersion());
             message.append(" > ");
             message.append(dependency.getLatestVersion());
+            if (iter.hasNext()) {
+                message.append("\n");
+            }
         }
         message.append( "\n");
         return message.toString();
