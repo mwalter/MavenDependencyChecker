@@ -7,9 +7,11 @@
 ---
 <!-- Plugin description -->
 Checks if there are any new Maven project dependencies available.</br>
-If there are any new releases of the dependencies you use in your project the plugin will display a dialog containing
+If there are any new releases of the dependencies you use in your project the plugin will display a dialogue containing
 all dependencies which can or should be updated. You'll see the version of the dependencies you use right now and the
-latest versions available at Maven Central. You can choose to keep the results by copying them to the clipboard. 
+latest versions available at Maven Central. You can choose to keep the results by copying them to the clipboard.
+
+Please keep in mind that dependencies which are available at Maven Central will be checked only.
 
 In order to check for updates just select your Maven POM file (pom.xml) in the project explorer view.
 Right-click the file and choose <kbd>Check Maven Dependencies</kbd> from the context menu.
