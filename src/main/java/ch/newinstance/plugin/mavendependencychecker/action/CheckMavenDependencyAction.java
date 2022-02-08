@@ -3,6 +3,7 @@ package ch.newinstance.plugin.mavendependencychecker.action;
 import ch.newinstance.plugin.mavendependencychecker.client.MavenSearchClient;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 import ch.newinstance.plugin.mavendependencychecker.parser.DependencyParser;
+import ch.newinstance.plugin.mavendependencychecker.ui.ResultDialog;
 import ch.newinstance.plugin.mavendependencychecker.util.MessageCreator;
 import ch.newinstance.plugin.mavendependencychecker.util.QueryBuilder;
 import ch.newinstance.plugin.mavendependencychecker.util.VersionComparator;
@@ -72,8 +73,10 @@ public class CheckMavenDependencyAction extends AnAction {
         String message = MessageCreator.createResultMessage(dependenciesToUpdate);
 
         String[] options = {"Copy to Clipboard", Messages.getCancelButton()};
-        int buttonPressed = Messages.showDialog("You should consider upgrading the following project dependencies:\n\n" + message,
+        ResultDialog resultDialog = new ResultDialog("You should consider upgrading the following project dependencies:\n\n" + message,
                 "Outdated Dependencies Found", options, 0, UIUtil.getWarningIcon());
+        resultDialog.show();
+        int buttonPressed = resultDialog.getExitCode();
 
         if (buttonPressed == 0) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

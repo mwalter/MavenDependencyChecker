@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.3.0"
+    id("org.jetbrains.intellij") version "1.3.1"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
@@ -34,13 +34,10 @@ intellij {
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
 
     dependencies {
-        implementation("io.projectreactor:reactor-core:3.4.12")
-        implementation("io.projectreactor.netty:reactor-netty:1.0.13")
-        implementation("org.json:json:20210307")
+        implementation("org.json:json:20211205")
         implementation("org.apache.maven:maven-model:3.8.4")
 
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-        testImplementation("io.projectreactor:reactor-test:3.4.12")
         testImplementation("org.mockito:mockito-core:4.2.0")
         testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
 

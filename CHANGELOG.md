@@ -4,12 +4,10 @@
 
 ## [Unreleased]
 
-## [1.0.0] - 2022-01-31
-### Initial release
-
-## [1.0.1] - 2022-02-02
-### Fixed
-- IDE error occurring when updating the state of the plugin.
+## [1.2.0] - 2022-02-08
+### Changed
+- Improved performance of the plugin.
+- Increased result dialog window size.
 
 ## [1.1.0] - 2022-02-06
 ### Added
@@ -18,3 +16,10 @@
 ### Changed
 - Shortened the text of the context menu entry to execute the plugin.
 - Improved the plugin description.
+
+## [1.0.1] - 2022-02-02
+### Fixed
+- IDE error occurring when updating the state of the plugin.
+
+## [1.0.0] - 2022-01-31
+### Initial release
