@@ -16,9 +16,9 @@ class VersionComparatorTest {
     private VersionComparator testee;
 
     @Test
-    void compareVersions_validJson_shouldReturnResult() {
+    void compareVersions_newVersionAvailable_shouldReturnResult() {
         testee = new VersionComparator(createModuleDependency("3.11.0"));
-        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getValidJson()));
+        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
         assertFalse(result.isEmpty());
         assertEquals("org.apache.commons", result.get(0).getGroupId());
         assertEquals("commons-lang3", result.get(0).getArtifactId());
@@ -27,20 +27,27 @@ class VersionComparatorTest {
     }
 
     @Test
-    void compareVersions_emptyJson_shouldReturnEmptyResult() {
+    void compareVersions_noVersionFound_shouldReturnEmptyResult() {
         testee = new VersionComparator(createModuleDependency("3.11.0"));
         List<DependencyUpdateResult> result = testee.compareVersions(Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void compareVersions_validJson_shouldReturnEmptyResult() {
+    void compareVersions_alreadyLatestVersionUsed_shouldReturnEmptyResult() {
         testee = new VersionComparator(createModuleDependency("3.12.0"));
         List<DependencyUpdateResult> result = testee.compareVersions(Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
-    private String getValidJson() {
+    @Test
+    void compareVersions_wrongVersionUsed_shouldReturnEmptyResult() {
+        testee = new VersionComparator(createModuleDependency("3.13.0"));
+        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
+        assertTrue(result.isEmpty());
+    }
+
+    private String getResponse() {
         return "{" +
             "\"response\": {" +
                 "\"docs\": [" +

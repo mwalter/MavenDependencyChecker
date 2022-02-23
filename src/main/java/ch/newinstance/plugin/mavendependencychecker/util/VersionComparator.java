@@ -1,6 +1,8 @@
 package ch.newinstance.plugin.mavendependencychecker.util;
 
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
+
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,11 +34,13 @@ public class VersionComparator {
                 String groupId = docsObject.getString(GROUP);
                 String artifactId = docsObject.getString(ARTIFACT);
                 String latestVersion = docsObject.getString(LATEST_VERSION);
+                ComparableVersion latestVersionComparable = new ComparableVersion(latestVersion);
 
                 String key = groupId + ":" + artifactId;
                 String currentVersion = moduleDependencies.get(key);
+                ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
 
-                if (!currentVersion.equals(latestVersion)) {
+                if (latestVersionComparable.compareTo(currentVersionComparable) > 0) {
                     result.add(new DependencyUpdateResult(groupId, artifactId, currentVersion, latestVersion));
                 }
             } catch (JSONException je) {

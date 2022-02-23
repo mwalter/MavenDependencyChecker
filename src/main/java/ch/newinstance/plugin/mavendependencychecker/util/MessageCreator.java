@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 
 public class MessageCreator {
 
+    private MessageCreator() {
+        // utility class
+    }
+
     public static String createResultMessage(List<DependencyUpdateResult> dependenciesToUpdate) {
         List<DependencyUpdateResult> sortedDependenciesToUpdate = dependenciesToUpdate.stream()
                 .sorted(Comparator.comparing(DependencyUpdateResult::getGroupId)
