@@ -4,7 +4,6 @@ import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,12 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class VersionComparatorTest {
+class VersionComparatorTest {
 
-    private final VersionComparator testee = new VersionComparator(createModuleDependency());
+    private VersionComparator testee;
 
     @Test
-    public void compareVersions_validJson_shouldReturnResult() {
+    void compareVersions_validJson_shouldReturnResult() {
+        testee = new VersionComparator(createModuleDependency("3.11.0"));
         List<DependencyUpdateResult> result = testee.compareVersions(List.of(getValidJson()));
         assertFalse(result.isEmpty());
         assertEquals("org.apache.commons", result.get(0).getGroupId());
@@ -27,7 +27,15 @@ public class VersionComparatorTest {
     }
 
     @Test
-    public void compareVersions_emptyJson_shouldReturnEmptyResult() {
+    void compareVersions_emptyJson_shouldReturnEmptyResult() {
+        testee = new VersionComparator(createModuleDependency("3.11.0"));
+        List<DependencyUpdateResult> result = testee.compareVersions(Collections.emptyList());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void compareVersions_validJson_shouldReturnEmptyResult() {
+        testee = new VersionComparator(createModuleDependency("3.12.0"));
         List<DependencyUpdateResult> result = testee.compareVersions(Collections.emptyList());
         assertTrue(result.isEmpty());
     }
@@ -49,9 +57,7 @@ public class VersionComparatorTest {
         "}";
     }
 
-    private Map<String, String> createModuleDependency() {
-        Map<String, String> map = new HashMap<>();
-        map.put("org.apache.commons:commons-lang3", "3.11.0");
-        return map;
+    private Map<String, String> createModuleDependency(String version) {
+        return Map.of("org.apache.commons:commons-lang3", version);
     }
 }

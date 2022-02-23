@@ -9,18 +9,18 @@ import java.util.List;
 import org.apache.maven.model.Dependency;
 import org.junit.jupiter.api.Test;
 
-public class QueryBuilderTest {
+class QueryBuilderTest {
 
     private final QueryBuilder testee = new QueryBuilder();
     
     @Test
-    public void buildQueries_emptyList_shouldReturnEmptyList() {
+    void buildQueries_emptyList_shouldReturnEmptyList() {
         List<String> result = testee.buildQueries(Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
-    public void buildQueries_oneDependency_shouldReturnOneQuery() {
+    void buildQueries_oneDependency_shouldReturnOneQuery() {
         Dependency dependency = new Dependency();
         dependency.setGroupId("org.apache.commons");
         dependency.setArtifactId("commons-lang3");
@@ -30,7 +30,7 @@ public class QueryBuilderTest {
     }
 
     @Test
-    public void buildQueries_twoDependencies_shouldReturnTwoQueries() {
+    void buildQueries_twoDependencies_shouldReturnTwoQueries() {
         Dependency dependency1 = new Dependency();
         dependency1.setGroupId("org.apache.commons");
         dependency1.setArtifactId("commons-lang3");
