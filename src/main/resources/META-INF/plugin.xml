@@ -2,15 +2,12 @@
 <idea-plugin>
     <id>ch.newinstance.plugin.mavendependencychecker</id>
     <name>Maven Dependency Checker</name>
-    <version>1.1.0</version>
+    <version>1.0.0</version>
     <vendor>Marc Walter</vendor>
 
     <description>
         <![CDATA[
-            Shows all available new versions of the Maven dependencies used by the project.<br/><br/>
-            This plugin does NOT modify the project's POM file. It just displays the different versions
-            if there are any new versions available. Also keep in mind that only dependencies available
-            at Maven Central will be checked for updates.
+            Description of the IntelliJ plugin here.
         ]]>
     </description>
 

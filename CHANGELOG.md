@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.3.0] - 2022-02-26
+### Changed
+- Improved version comparison.
+
 ## [1.2.0] - 2022-02-08
 ### Changed
 - Improved performance of the plugin.
