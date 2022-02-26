@@ -41,7 +41,7 @@ intellij {
         testImplementation("org.mockito:mockito-core:4.2.0")
         testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
 
-        downloadSources
+        downloadSources.set(true)
     }
 }
 
@@ -111,6 +111,7 @@ tasks {
     }
 
     signPlugin {
+        // DO NOT COMMIT OR GITHUB BUILD WILL BREAK!
         // certificateChain.set(File(System.getenv("CERTIFICATE_CHAIN") ?: "./.certs/jetbrains-chain.crt").readText(Charsets.UTF_8))
         // privateKey.set(File(System.getenv("PRIVATE_KEY") ?: "./.certs/jetbrains-private.pem").readText(Charsets.UTF_8))
         certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
