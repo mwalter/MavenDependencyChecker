@@ -47,7 +47,7 @@ public class CheckMavenDependencyAction extends AnAction {
 
         Map<String, String> moduleDependencies = parser.parseModuleDependencies();
 
-        if (mavenDependencies.isEmpty()) {
+        if (moduleDependencies.isEmpty()) {
             Messages.showInfoMessage("No project dependency information found.\nNothing to check.", "No Project Dependencies");
             return;
         }

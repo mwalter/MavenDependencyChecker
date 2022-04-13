@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.3.1] - 2022-04-14
+### Fixed
+- Minor bug leading to exception
+
 ## [1.3.0] - 2022-02-26
 ### Changed
 - Improved version comparison.
