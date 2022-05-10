@@ -3,6 +3,7 @@ package ch.newinstance.plugin.mavendependencychecker.util;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 
 import org.apache.maven.artifact.versioning.ComparableVersion;
+import org.apache.maven.model.Dependency;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,8 +21,11 @@ public class VersionComparator {
 
     private final Map<String, String> moduleDependencies;
 
-    public VersionComparator(Map<String, String> moduleDependencies) {
+    private final List<Dependency> mavenDependencies;
+
+    public VersionComparator(Map<String, String> moduleDependencies, List<Dependency> mavenDependencies) {
         this.moduleDependencies = moduleDependencies;
+        this.mavenDependencies = mavenDependencies;
     }
 
     public List<DependencyUpdateResult> compareVersions(List<String> jsons) {
@@ -37,7 +41,15 @@ public class VersionComparator {
                 ComparableVersion latestVersionComparable = new ComparableVersion(latestVersion);
 
                 String key = groupId + ":" + artifactId;
-                String currentVersion = moduleDependencies.get(key);
+
+                // if not managed by IntelliJ use current POM version instead
+                String currentVersion = moduleDependencies.get(key) != null ? moduleDependencies.get(key) : getCurrentMavenDependencyVersion(groupId, artifactId);
+
+                if (currentVersion == null) {
+                    // if still null skip version comparison
+                    continue;
+                }
+
                 ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
 
                 if (latestVersionComparable.compareTo(currentVersionComparable) > 0) {
@@ -48,6 +60,15 @@ public class VersionComparator {
             }
         }
         return result;
+    }
+
+    private String getCurrentMavenDependencyVersion(String groupId, String artifactId) {
+        for (Dependency mavenDependency : mavenDependencies) {
+            if (mavenDependency.getGroupId().equals(groupId) && mavenDependency.getArtifactId().equals(artifactId)) {
+                return mavenDependency.getVersion();
+            }
+        }
+        return null;
     }
 
 }

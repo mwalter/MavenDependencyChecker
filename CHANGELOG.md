@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.4.0] - 2022-05-11
+### Added
+- Dependencies in dependency management section are checked as well
+
 ## [1.3.1] - 2022-04-14
 ### Fixed
 - Minor bug leading to exception

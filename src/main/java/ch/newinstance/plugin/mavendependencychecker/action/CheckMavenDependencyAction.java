@@ -58,7 +58,7 @@ public class CheckMavenDependencyAction extends AnAction {
         MavenSearchClient searchClient = new MavenSearchClient();
         List<String> queryResults = searchClient.executeSearchQueries(queries);
 
-        VersionComparator versionComparator = new VersionComparator(moduleDependencies);
+        VersionComparator versionComparator = new VersionComparator(moduleDependencies, mavenDependencies);
         List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareVersions(queryResults);
 
         if (dependenciesToUpdate.isEmpty()) {

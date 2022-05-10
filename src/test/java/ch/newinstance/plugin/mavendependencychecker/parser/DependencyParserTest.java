@@ -44,7 +44,7 @@ class DependencyParserTest {
 
         List<Dependency> result = parser.parseMavenDependencies();
         assertFalse(result.isEmpty());
-        assertEquals(4, result.size());
+        assertEquals(6, result.size());
     }
 
     private String readPomFile() {

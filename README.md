@@ -6,7 +6,8 @@
 
 ---
 <!-- Plugin description -->
-Checks if there are any new Maven project dependencies available.</br>
+Checks if there are any new Maven project dependencies available.
+
 If there are any new releases of the dependencies you use in your project the plugin will display a dialogue containing
 all dependencies which can or should be updated in oder to avoid security issues for example. You'll see the version of
 the dependencies you use right now and the latest versions available at Maven Central. You can choose to keep the

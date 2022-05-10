@@ -12,6 +12,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,11 @@ public class DependencyParser {
         MavenXpp3Reader reader = new MavenXpp3Reader();
         try {
             Model model = reader.read(new StringReader(pomFile.getText()));
-            return model.getDependencies();
+            List<Dependency> dependencies = new ArrayList<>(model.getDependencies());
+            if (model.getDependencyManagement() != null) {
+                dependencies.addAll(model.getDependencyManagement().getDependencies());
+            }
+            return dependencies;
         } catch (IOException | XmlPullParserException ex) {
             return Collections.emptyList();
         }
