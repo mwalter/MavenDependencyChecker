@@ -4,7 +4,7 @@
 
 ## [Unreleased]
 
-## [1.5.0] - 2022-05-15
+## [1.5.0] - 2022-05-26
 ### Added
 - Parse versions from properties section if placeholders are used
 
