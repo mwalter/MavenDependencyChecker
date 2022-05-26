@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class DependencyParser {
 
@@ -35,10 +36,12 @@ public class DependencyParser {
         try {
             Model model = reader.read(new StringReader(pomFile.getText()));
             List<Dependency> dependencies = new ArrayList<>(model.getDependencies());
+
             if (model.getDependencyManagement() != null) {
                 dependencies.addAll(model.getDependencyManagement().getDependencies());
             }
-            return dependencies;
+
+            return parsePropertyPlaceholder(model, dependencies);
         } catch (IOException | XmlPullParserException ex) {
             return Collections.emptyList();
         }
@@ -60,6 +63,22 @@ public class DependencyParser {
             return true;
         });
         return libraryMap;
+    }
+
+    private List<Dependency> parsePropertyPlaceholder(Model model, List<Dependency> dependencies) {
+        Properties properties = model.getProperties();
+        if (properties.isEmpty()) {
+            return dependencies;
+        }
+
+        for (Dependency dependency : dependencies) {
+            String version = dependency.getVersion();
+            if (version != null && version.startsWith("${")) {
+                String propertyVersion = (String) properties.get(version.substring(2, version.length() - 1)); // remove the '${}' from version string
+                dependency.setVersion(propertyVersion);
+            }
+        }
+        return dependencies;
     }
 
 }

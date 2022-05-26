@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.5.3"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
@@ -35,7 +35,9 @@ intellij {
 
     dependencies {
         implementation("org.json:json:20211205")
-        implementation("org.apache.maven:maven-model:3.8.4")
+        implementation("org.apache.maven:maven-model:3.8.4") {
+            exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
+        }
 
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
         testImplementation("org.mockito:mockito-core:4.2.0")

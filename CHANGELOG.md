@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.5.0] - 2022-05-15
+### Added
+- Parse versions from properties section if placeholders are used
+
 ## [1.4.0] - 2022-05-11
 ### Added
 - Dependencies in dependency management section are checked as well

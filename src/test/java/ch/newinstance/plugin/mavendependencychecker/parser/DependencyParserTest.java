@@ -15,6 +15,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -45,6 +46,18 @@ class DependencyParserTest {
         List<Dependency> result = parser.parseMavenDependencies();
         assertFalse(result.isEmpty());
         assertEquals(6, result.size());
+    }
+
+    @Test
+    void parseMavenDependencies_oneDependencyWithPlaceholder_shouldReturnVersionFromPropertiesSection() {
+        when(pomFile.getText()).thenReturn(readPomFile());
+
+        List<Dependency> result = parser.parseMavenDependencies();
+        Optional<Dependency> dependencyWithReplacedVersion = result.stream()
+                .filter(dependency -> dependency.getArtifactId().equals("spring-cloud-dependencies"))
+                .findFirst();
+        assertTrue(dependencyWithReplacedVersion.isPresent());
+        assertEquals("2021.0.1", dependencyWithReplacedVersion.get().getVersion());
     }
 
     private String readPomFile() {
