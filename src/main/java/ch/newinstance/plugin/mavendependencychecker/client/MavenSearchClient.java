@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class MavenSearchClient {
 
-    private static final String MAVEN_BASE_SEARCH_URI = "https://search.maven.org/solrsearch/select?wt=json&q=";
+    private static final String MAVEN_BASE_SEARCH_URI = "https://search.maven.org/solrsearch/select?wt=json&core=gav&q=";
 
     private static final ExecutorService executorService = Executors.newFixedThreadPool(5);
 

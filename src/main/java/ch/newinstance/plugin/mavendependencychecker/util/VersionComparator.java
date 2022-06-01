@@ -15,7 +15,7 @@ public class VersionComparator {
 
     private static final String RESPONSE = "response";
     private static final String DOCS_ARRAY = "docs";
-    private static final String LATEST_VERSION = "latestVersion";
+    private static final String VERSION = "v";
     private static final String GROUP = "g";
     private static final String ARTIFACT = "a";
 
@@ -37,7 +37,7 @@ public class VersionComparator {
                 JSONObject docsObject = response.getJSONArray(DOCS_ARRAY).getJSONObject(0);
                 String groupId = docsObject.getString(GROUP);
                 String artifactId = docsObject.getString(ARTIFACT);
-                String latestVersion = docsObject.getString(LATEST_VERSION);
+                String latestVersion = docsObject.getString(VERSION);
                 ComparableVersion latestVersionComparable = new ComparableVersion(latestVersion);
 
                 String key = groupId + ":" + artifactId;

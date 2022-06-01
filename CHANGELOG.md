@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.6.0] - 2022-06-01
+### Changed
+- Improved search query for Maven Central
+
 ## [1.5.0] - 2022-05-26
 ### Added
 - Parse versions from properties section if placeholders are used

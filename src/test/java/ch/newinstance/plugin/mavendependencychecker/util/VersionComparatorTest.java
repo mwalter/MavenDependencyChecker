@@ -93,7 +93,7 @@ class VersionComparatorTest {
                 "\"id\": \"org.apache.commons:commons-lang3\"," +
                 "\"g\": \"org.apache.commons\"," +
                 "\"a\": \"commons-lang3\"," +
-                "\"latestVersion\": \"3.12.0\"," +
+                "\"v\": \"3.12.0\"," +
                 "\"repositoryId\": \"central\"," +
                 "\"p\": \"jar\"" +
                 "}" +
