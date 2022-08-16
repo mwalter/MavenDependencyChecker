@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.6.1] - 2022-08-16
+### Fixed
+- Support for IntelliJ 2022.2
+
 ## [1.6.0] - 2022-06-01
 ### Changed
 - Improved search query for Maven Central
