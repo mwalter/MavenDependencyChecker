@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.6.2] - 2022-09-10
+### Fixed
+- Parse groupId and artifactId from properties section as well if placeholders are used
+
 ## [1.6.1] - 2022-08-16
 ### Fixed
 - Support for IntelliJ 2022.2

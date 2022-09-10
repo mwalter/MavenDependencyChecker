@@ -72,7 +72,7 @@ public class CheckMavenDependencyAction extends AnAction {
     private void showResultDialog(List<DependencyUpdateResult> dependenciesToUpdate) {
         String message = MessageCreator.createResultMessage(dependenciesToUpdate);
 
-        String[] options = {"Copy to Clipboard", Messages.getCancelButton()};
+        String[] options = {"Copy to Clipboard", "Got it"};
         ResultDialog resultDialog = new ResultDialog("You should consider upgrading the following project dependencies:\n\n" + message,
                 "Outdated Dependencies Found", options, 0, UIUtil.getWarningIcon());
         resultDialog.show();

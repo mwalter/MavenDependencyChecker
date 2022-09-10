@@ -74,10 +74,21 @@ public class DependencyParser {
         for (Dependency dependency : dependencies) {
             String version = dependency.getVersion();
             if (version != null && version.startsWith("${")) {
-                String propertyVersion = (String) properties.get(version.substring(2, version.length() - 1)); // remove the '${}' from version string
+                String propertyVersion = (String) properties.get(version.substring(2, version.length() - 1));
                 dependency.setVersion(propertyVersion);
             }
+            String groupId = dependency.getGroupId();
+            if (groupId != null && groupId.startsWith("${")) {
+                String propertyGroupId = (String) properties.get(groupId.substring(2, groupId.length() - 1));
+                dependency.setGroupId(propertyGroupId);
+            }
+            String artifactId = dependency.getArtifactId();
+            if (artifactId != null && artifactId.startsWith("${")) {
+                String propertyArtifactId = (String) properties.get(artifactId.substring(2, artifactId.length() - 1));
+                dependency.setArtifactId(propertyArtifactId);
+            }
         }
+
         return dependencies;
     }
 

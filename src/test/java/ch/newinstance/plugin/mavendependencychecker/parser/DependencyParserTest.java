@@ -45,11 +45,11 @@ class DependencyParserTest {
 
         List<Dependency> result = parser.parseMavenDependencies();
         assertFalse(result.isEmpty());
-        assertEquals(6, result.size());
+        assertEquals(8, result.size());
     }
 
     @Test
-    void parseMavenDependencies_oneDependencyWithPlaceholder_shouldReturnVersionFromPropertiesSection() {
+    void parseMavenDependencies_dependencyVersionWithPlaceholder_shouldReturnVersionFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
         List<Dependency> result = parser.parseMavenDependencies();
@@ -58,6 +58,30 @@ class DependencyParserTest {
                 .findFirst();
         assertTrue(dependencyWithReplacedVersion.isPresent());
         assertEquals("2021.0.1", dependencyWithReplacedVersion.get().getVersion());
+    }
+
+    @Test
+    void parseMavenDependencies_dependencyGropudIdWithPlaceholder_shouldReturnGroupNameFromPropertiesSection() {
+        when(pomFile.getText()).thenReturn(readPomFile());
+
+        List<Dependency> result = parser.parseMavenDependencies();
+        Optional<Dependency> dependencyWithReplacedGroupId = result.stream()
+                .filter(dependency -> dependency.getArtifactId().equals("lombok"))
+                .findFirst();
+        assertTrue(dependencyWithReplacedGroupId.isPresent());
+        assertEquals("org.projectlombok", dependencyWithReplacedGroupId.get().getGroupId());
+    }
+
+    @Test
+    void parseMavenDependencies_dependencyArtifactIdWithPlaceholder_shouldReturnArtifactNameFromPropertiesSection() {
+        when(pomFile.getText()).thenReturn(readPomFile());
+
+        List<Dependency> result = parser.parseMavenDependencies();
+        Optional<Dependency> dependencyWithReplacedArtifactId = result.stream()
+                .filter(dependency -> dependency.getGroupId().equals("org.apache.commons"))
+                .findFirst();
+        assertTrue(dependencyWithReplacedArtifactId.isPresent());
+        assertEquals("commons-lang3", dependencyWithReplacedArtifactId.get().getArtifactId());
     }
 
     private String readPomFile() {
