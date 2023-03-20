@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [1.6.4] - 2023-03-21
+### Fixed
+- Support for IntelliJ 2023.1
+
 ## [1.6.3] - 2022-12-01
 ### Fixed
 - Support for IntelliJ 2022.3
