@@ -126,6 +126,8 @@ jobs:
 
       # Store already-built plugin as an artifact for downloading
       - name: Upload artifact
+        env:
+          ACTIONS_STEP_DEBUG: true
         uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.artifact.outputs.filename }}
