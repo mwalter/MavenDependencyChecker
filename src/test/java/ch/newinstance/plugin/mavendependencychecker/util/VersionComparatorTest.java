@@ -2,6 +2,8 @@ package ch.newinstance.plugin.mavendependencychecker.util;
 
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
+import org.jetbrains.idea.maven.model.MavenPlugin;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -18,9 +20,9 @@ class VersionComparatorTest {
     private VersionComparator testee;
 
     @Test
-    void compareVersions_newVersionAvailable_shouldReturnResult() {
-        testee = new VersionComparator(createModuleDependency("3.11.0"), Collections.emptyList());
-        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
+    void compareDependencyVersions_newVersionAvailable_shouldReturnResult() {
+        testee = new VersionComparator(List.of(getDependencyResponse()));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.11.0"), Collections.emptyList());
         assertFalse(result.isEmpty());
         assertEquals("org.apache.commons", result.get(0).getGroupId());
         assertEquals("commons-lang3", result.get(0).getArtifactId());
@@ -29,63 +31,100 @@ class VersionComparatorTest {
     }
 
     @Test
-    void compareVersions_noVersionFound_shouldReturnEmptyResult() {
-        testee = new VersionComparator(createModuleDependency("3.11.0"), Collections.emptyList());
-        List<DependencyUpdateResult> result = testee.compareVersions(Collections.emptyList());
+    void compareDependencyVersions_noVersionFound_shouldReturnEmptyResult() {
+        testee = new VersionComparator(Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.11.0"), Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void compareVersions_alreadyLatestVersionUsed_shouldReturnEmptyResult() {
-        testee = new VersionComparator(createModuleDependency("3.12.0"), Collections.emptyList());
-        List<DependencyUpdateResult> result = testee.compareVersions(Collections.emptyList());
+    void compareDependencyVersions_alreadyLatestVersionUsed_shouldReturnEmptyResult() {
+        testee = new VersionComparator(Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.12.0"), Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void compareVersions_wrongVersionUsed_shouldReturnEmptyResult() {
-        testee = new VersionComparator(createModuleDependency("3.13.0"), Collections.emptyList());
-        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
+    void compareDependencyVersions_wrongVersionUsed_shouldReturnEmptyResult() {
+        testee = new VersionComparator(List.of(getDependencyResponse()));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.13.0"), Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void compareVersions_latestMavenVersionUsed_shouldReturnResult() {
+    void compareDependencyVersions_latestMavenVersionUsed_shouldReturnResult() {
         Dependency dependency = new Dependency();
         dependency.setGroupId("org.apache.commons");
         dependency.setArtifactId("commons-lang3");
         dependency.setVersion("3.11.0");
 
-        testee = new VersionComparator(createModuleDependency(null), List.of(dependency));
-        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
+        testee = new VersionComparator(List.of(getDependencyResponse()));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency(null), List.of(dependency));
         assertFalse(result.isEmpty());
     }
 
     @Test
-    void compareVersions_noMavenVersionAvailable_shouldReturnEmptyResult() {
+    void compareDependencyVersions_noMavenVersionAvailable_shouldReturnEmptyResult() {
         Dependency dependency = new Dependency();
         dependency.setGroupId("org.apache.commons");
         dependency.setArtifactId("commons-lang3");
         dependency.setVersion(null);
 
-        testee = new VersionComparator(createModuleDependency(null), List.of(dependency));
-        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
+        testee = new VersionComparator(List.of(getDependencyResponse()));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency(null), List.of(dependency));
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void compareVersions_noMavenDependencyFound_shouldReturnEmptyResult() {
+    void compareDependencyVersions_noMavenDependencyFound_shouldReturnEmptyResult() {
         Dependency dependency = new Dependency();
         dependency.setGroupId("org.apache.commons");
         dependency.setArtifactId("commons-collections4");
         dependency.setVersion("4.4");
 
-        testee = new VersionComparator(createModuleDependency(null), List.of(dependency));
-        List<DependencyUpdateResult> result = testee.compareVersions(List.of(getResponse()));
+        testee = new VersionComparator(List.of(getDependencyResponse()));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency(null), List.of(dependency));
         assertTrue(result.isEmpty());
     }
 
-    private String getResponse() {
+    @Test
+    void comparePluginVersions_newVersionAvailable_shouldReturnResult() {
+        testee = new VersionComparator(List.of(getPluginResponse()));
+        List<DependencyUpdateResult> result = testee.comparePluginVersions(List.of(createMavenPlugin("3.10.0")), Collections.emptyList());
+        assertFalse(result.isEmpty());
+        assertEquals("org.apache.maven.plugins", result.get(0).getGroupId());
+        assertEquals("maven-compiler-plugin", result.get(0).getArtifactId());
+        assertEquals("3.10.0", result.get(0).getCurrentVersion());
+        assertEquals("3.11.0", result.get(0).getLatestVersion());
+    }
+
+    @Test
+    void comparePluginVersions_noVersionFound_shouldReturnEmptyResult() {
+        testee = new VersionComparator(Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.comparePluginVersions(List.of(createMavenPlugin("3.11.0")), Collections.emptyList());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void comparePluginVersions_alreadyLatestVersionUsed_shouldReturnEmptyResult() {
+        testee = new VersionComparator(Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.comparePluginVersions(List.of(createMavenPlugin("3.11.0")), Collections.emptyList());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void comparePluginVersions_latestMavenVersionUsed_shouldReturnResult() {
+        Plugin plugin = new Plugin();
+        plugin.setGroupId("org.apache.maven.plugins");
+        plugin.setArtifactId("maven-compiler-plugin");
+        plugin.setVersion("3.10.0");
+
+        testee = new VersionComparator(List.of(getPluginResponse()));
+        List<DependencyUpdateResult> result = testee.comparePluginVersions(List.of(createMavenPlugin(null)), List.of(plugin));
+        assertFalse(result.isEmpty());
+    }
+
+    private String getDependencyResponse() {
         return "{" +
                 "\"response\": {" +
                 "\"docs\": [" +
@@ -106,5 +145,27 @@ class VersionComparatorTest {
         Map<String, String> map = new HashMap<>();
         map.put("org.apache.commons:commons-lang3", version);
         return map;
+    }
+
+    private String getPluginResponse() {
+        return "{" +
+                "\"response\": {" +
+                "\"docs\": [" +
+                "{" +
+                "\"id\": \"org.apache.maven.plugins:maven-compiler-plugin\"," +
+                "\"g\": \"org.apache.maven.plugins\"," +
+                "\"a\": \"maven-compiler-plugin\"," +
+                "\"v\": \"3.11.0\"," +
+                "\"repositoryId\": \"central\"," +
+                "\"p\": \"jar\"" +
+                "}" +
+                "]" +
+                "}" +
+                "}";
+    }
+
+    private MavenPlugin createMavenPlugin(String version) {
+        return new MavenPlugin("org.apache.maven.plugins", "maven-compiler-plugin", version,
+                false, false, null, Collections.emptyList(), Collections.emptyList());
     }
 }

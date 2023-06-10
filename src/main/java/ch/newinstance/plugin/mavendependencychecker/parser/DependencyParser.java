@@ -7,8 +7,12 @@ import com.intellij.psi.PsiFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.jetbrains.idea.maven.model.MavenPlugin;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -23,6 +27,8 @@ public class DependencyParser {
 
     private final PsiFile pomFile;
 
+    private final MavenXpp3Reader reader = new MavenXpp3Reader();
+
     public DependencyParser(PsiFile pomFile) {
         this.pomFile = pomFile;
     }
@@ -32,7 +38,6 @@ public class DependencyParser {
             return Collections.emptyList();
         }
 
-        MavenXpp3Reader reader = new MavenXpp3Reader();
         try {
             Model model = reader.read(new StringReader(pomFile.getText()));
             List<Dependency> dependencies = new ArrayList<>(model.getDependencies());
@@ -63,6 +68,35 @@ public class DependencyParser {
             return true;
         });
         return libraryMap;
+    }
+
+    public List<Plugin> parseMavenPlugins() {
+        if (StringUtils.isBlank(pomFile.getText())) {
+            return Collections.emptyList();
+        }
+
+        List<Plugin> plugins = new ArrayList<>();
+
+        try {
+            Model model = reader.read(new StringReader(pomFile.getText()));
+
+            if (model.getBuild() != null) {
+                plugins.addAll(model.getBuild().getPlugins());
+                if (model.getBuild().getPluginManagement() != null) {
+                    plugins.addAll(model.getBuild().getPluginManagement().getPlugins());
+                }
+            }
+
+        } catch (IOException | XmlPullParserException ex) {
+            return Collections.emptyList();
+        }
+
+        return plugins;
+    }
+
+    public List<MavenPlugin> parseProjectPlugins() {
+        List<MavenProject> mavenProjects = MavenProjectsManager.getInstance(pomFile.getProject()).getProjects();
+        return mavenProjects.get(0).getPlugins(); // check is always done for one project only
     }
 
     private List<Dependency> parsePropertyPlaceholder(Model model, List<Dependency> dependencies) {

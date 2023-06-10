@@ -1,0 +1,579 @@
+{
+  "responseHeader": {
+    "status": 0,
+    "QTime": 13,
+    "params": {
+      "q": "g: org.apache.commons  AND a: commons-lang3 ",
+      "core": "gav",
+      "indent": "off",
+      "fl": "id,g,a,v,p,ec,timestamp,tags",
+      "start": "",
+      "sort": "score desc,timestamp desc,g asc,a asc,v desc",
+      "rows": "20",
+      "wt": "json",
+      "version": "2.2"
+    }
+  },
+  "response": {
+    "numFound": 18,
+    "start": 0,
+    "docs": [
+      {
+        "id": "org.apache.commons:commons-lang3:3.12.0",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.12.0",
+        "p": "jar",
+        "timestamp": 1614372052000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.11",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.11",
+        "p": "jar",
+        "timestamp": 1594560722000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.10",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.10",
+        "p": "jar",
+        "timestamp": 1584970776000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.9",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.9",
+        "p": "jar",
+        "timestamp": 1554946239000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.8.1",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.8.1",
+        "p": "jar",
+        "timestamp": 1537370669000,
+        "ec": [
+          "-javadoc.jar",
+          "-sources.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.8",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.8",
+        "p": "jar",
+        "timestamp": 1534383430000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.7",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.7",
+        "p": "jar",
+        "timestamp": 1509819379000,
+        "ec": [
+          "-javadoc.jar",
+          "-sources.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          "-src.zip",
+          "-src.tar.gz",
+          ".pom",
+          "-bin.zip",
+          "-bin.tar.gz"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.6",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.6",
+        "p": "jar",
+        "timestamp": 1497001265000,
+        "ec": [
+          "-javadoc.jar",
+          "-sources.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.5",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.5",
+        "p": "jar",
+        "timestamp": 1476388421000,
+        "ec": [
+          "-javadoc.jar",
+          "-sources.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.4",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.4",
+        "p": "jar",
+        "timestamp": 1428064272000,
+        "ec": [
+          "-javadoc.jar",
+          "-sources.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.3.2",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.3.2",
+        "p": "jar",
+        "timestamp": 1396786889000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.3.1",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.3.1",
+        "p": "jar",
+        "timestamp": 1394888674000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.3",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.3",
+        "p": "jar",
+        "timestamp": 1393578489000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.2.1",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.2.1",
+        "p": "jar",
+        "timestamp": 1388941333000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.2",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.2",
+        "p": "jar",
+        "timestamp": 1388250411000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "standard",
+          "justify",
+          "package",
+          "apache",
+          "lang",
+          "considered",
+          "existence",
+          "that",
+          "utility",
+          "commons",
+          "java",
+          "hierarchy"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.1",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.1",
+        "p": "jar",
+        "timestamp": 1321342025000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "that",
+          "utility",
+          "standard",
+          "commons",
+          "justify",
+          "package",
+          "java",
+          "hierarchy",
+          "lang",
+          "considered",
+          "existence"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.0.1",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.0.1",
+        "p": "jar",
+        "timestamp": 1312947886000,
+        "ec": [
+          "-javadoc.jar",
+          "-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "that",
+          "utility",
+          "standard",
+          "commons",
+          "justify",
+          "package",
+          "java",
+          "hierarchy",
+          "lang",
+          "considered",
+          "existence"
+        ]
+      },
+      {
+        "id": "org.apache.commons:commons-lang3:3.0",
+        "g": "org.apache.commons",
+        "a": "commons-lang3",
+        "v": "3.0",
+        "p": "jar",
+        "timestamp": 1311046565000,
+        "ec": [
+          "-sources.jar",
+          "-javadoc.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "classes",
+          "that",
+          "utility",
+          "standard",
+          "commons",
+          "justify",
+          "package",
+          "java",
+          "hierarchy",
+          "lang",
+          "considered",
+          "existence"
+        ]
+      }
+    ]
+  }
+}

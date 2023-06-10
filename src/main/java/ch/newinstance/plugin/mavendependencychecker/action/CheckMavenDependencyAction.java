@@ -7,6 +7,7 @@ import ch.newinstance.plugin.mavendependencychecker.ui.ResultDialog;
 import ch.newinstance.plugin.mavendependencychecker.util.MessageCreator;
 import ch.newinstance.plugin.mavendependencychecker.util.QueryBuilder;
 import ch.newinstance.plugin.mavendependencychecker.util.VersionComparator;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -14,7 +15,9 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.ui.UIUtil;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.model.MavenPlugin;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -38,28 +41,33 @@ public class CheckMavenDependencyAction extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent event) {
         PsiFile pomFile = event.getData(CommonDataKeys.PSI_FILE);
         DependencyParser parser = new DependencyParser(pomFile);
-        List<Dependency> mavenDependencies = parser.parseMavenDependencies();
 
-        if (mavenDependencies.isEmpty()) {
-            Messages.showInfoMessage("No Maven dependencies found in POM file.\nNothing to check.", "No Maven Project Dependencies");
+        List<Dependency> mavenDependencies = parser.parseMavenDependencies();
+        List<Plugin> plugins = parser.parseMavenPlugins();
+
+        if (mavenDependencies.isEmpty() && plugins.isEmpty()) {
+            Messages.showInfoMessage("No Maven dependencies or plugins found in POM file.\nNothing to check.", "No Maven Project Dependencies");
             return;
         }
 
         Map<String, String> moduleDependencies = parser.parseModuleDependencies();
+        List<MavenPlugin> mavenPlugins = parser.parseProjectPlugins();
 
-        if (moduleDependencies.isEmpty()) {
+        if (moduleDependencies.isEmpty() && mavenPlugins.isEmpty()) {
             Messages.showInfoMessage("No project dependency information found.\nNothing to check.", "No Project Dependencies");
             return;
         }
 
         QueryBuilder queryBuilder = new QueryBuilder();
-        List<String> queries = queryBuilder.buildQueries(mavenDependencies);
+        List<String> queries = queryBuilder.buildDependencyQueries(mavenDependencies);
+        queries.addAll(queryBuilder.buildPluginQueries(plugins));
 
         MavenSearchClient searchClient = new MavenSearchClient();
         List<String> queryResults = searchClient.executeSearchQueries(queries);
 
-        VersionComparator versionComparator = new VersionComparator(moduleDependencies, mavenDependencies);
-        List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareVersions(queryResults);
+        VersionComparator versionComparator = new VersionComparator(queryResults);
+        List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareDependencyVersions(moduleDependencies, mavenDependencies);
+        dependenciesToUpdate.addAll(versionComparator.comparePluginVersions(mavenPlugins, plugins));
 
         if (dependenciesToUpdate.isEmpty()) {
             Messages.showInfoMessage("All project dependencies use the latest version available.\nHappy coding!", "Everything Up To Date");
@@ -67,6 +75,11 @@ public class CheckMavenDependencyAction extends AnAction {
         }
 
         showResultDialog(dependenciesToUpdate);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 
     private void showResultDialog(List<DependencyUpdateResult> dependenciesToUpdate) {

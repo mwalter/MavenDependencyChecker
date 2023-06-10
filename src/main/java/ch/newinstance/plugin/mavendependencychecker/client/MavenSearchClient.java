@@ -11,7 +11,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 
 public class MavenSearchClient {
@@ -31,7 +30,7 @@ public class MavenSearchClient {
                                 HttpRequest.newBuilder(URI.create(MAVEN_BASE_SEARCH_URI + query)).GET().build(),
                                 HttpResponse.BodyHandlers.ofString())
                         .thenApply(HttpResponse::body))
-                .collect(Collectors.toList());
+                .toList();
 
         List<String> results = new ArrayList<>();
         for (CompletableFuture<String> future : result) {

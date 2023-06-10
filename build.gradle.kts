@@ -1,3 +1,4 @@
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -9,9 +10,9 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.8.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.2"
+    id("org.jetbrains.intellij") version "1.14.1"
     // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "2.0.0"
+    id("org.jetbrains.changelog") version "2.1.0"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
     // Gradle Kover Plugin
@@ -39,16 +40,18 @@ intellij {
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+    plugins.set(listOf("maven"))
 
     dependencies {
-        implementation("org.json:json:20211205")
-        implementation("org.apache.maven:maven-model:3.8.4") {
+        implementation("org.json:json:20230227")
+        implementation("org.apache.maven:maven-model:3.9.2") {
             exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
         }
 
         testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
         testImplementation("org.mockito:mockito-core:4.2.0")
         testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
+        testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 
         downloadSources.set(true)
     }
@@ -58,6 +61,7 @@ intellij {
 changelog {
     version.set(properties("pluginVersion"))
     groups.set(emptyList())
+    path.set(file("CHANGELOG.md").canonicalPath)
 }
 
 // Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
@@ -109,9 +113,13 @@ tasks {
 
         // Get the latest available change notes from the changelog file
         changeNotes.set(provider {
-            changelog.run {
-                getOrNull(properties("pluginVersion")) ?: getLatest()
-            }.toHTML()
+            changelog.renderItem(
+                changelog
+                    .getUnreleased()
+                    .withHeader(false)
+                    .withEmptySections(false),
+                Changelog.OutputType.HTML
+            )
         })
     }
 

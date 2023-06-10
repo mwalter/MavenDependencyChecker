@@ -5,7 +5,6 @@ import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MessageCreator {
 
@@ -17,7 +16,7 @@ public class MessageCreator {
         List<DependencyUpdateResult> sortedDependenciesToUpdate = dependenciesToUpdate.stream()
                 .sorted(Comparator.comparing(DependencyUpdateResult::getGroupId)
                         .thenComparing(DependencyUpdateResult::getArtifactId))
-                .collect(Collectors.toList());
+                .toList();
 
         StringBuilder message = new StringBuilder();
         for (Iterator<DependencyUpdateResult> iter = sortedDependenciesToUpdate.iterator(); iter.hasNext(); ) {

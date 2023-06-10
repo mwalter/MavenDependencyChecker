@@ -14,6 +14,7 @@
     <change-notes>Initial release.</change-notes>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.idea.maven</depends>
 
     <actions>
         <action id="ch.newinstance.plugin.mavendependencychecker.action.CheckMavenDependencyAction"

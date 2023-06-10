@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+## [1.7.0] - 2023-06-10
+
+### Added
+- Added check of Maven plugins declared in POM file.
+
+### Fixed
+- Updated multiple libraries
+
 ## [1.6.4] - 2023-03-21
 
 ### Fixed
