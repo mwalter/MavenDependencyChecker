@@ -2,5 +2,7 @@
 .gradle
 .idea
 .qodana
+.vscode
+.run
 build
 bin

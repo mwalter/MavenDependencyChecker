@@ -17,13 +17,13 @@ import com.intellij.util.ui.UIUtil;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.model.MavenArtifact;
 import org.jetbrains.idea.maven.model.MavenPlugin;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.List;
-import java.util.Map;
 
 public class CheckMavenDependencyAction extends AnAction {
 
@@ -50,7 +50,7 @@ public class CheckMavenDependencyAction extends AnAction {
             return;
         }
 
-        Map<String, String> moduleDependencies = parser.parseModuleDependencies();
+        List<MavenArtifact> moduleDependencies = parser.parseModuleDependencies();
         List<MavenPlugin> mavenPlugins = parser.parseProjectPlugins();
 
         if (moduleDependencies.isEmpty() && mavenPlugins.isEmpty()) {

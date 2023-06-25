@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+## [1.8.0] - 2023-06-25
+
+### Added
+- Added a startup notification
+
+### Changed
+- Improved code to parse Maven dependencies
+- Updated IntelliJ platform plugin template
+
 ## [1.7.0] - 2023-06-10
 
 ### Added
@@ -79,3 +88,6 @@
 - IDE error occurring when updating the state of the plugin.
 
 ## [1.0.0] - 2022-01-31
+
+### Added
+- Initial release.

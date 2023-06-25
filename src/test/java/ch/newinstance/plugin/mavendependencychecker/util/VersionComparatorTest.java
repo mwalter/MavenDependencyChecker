@@ -3,13 +3,12 @@ package ch.newinstance.plugin.mavendependencychecker.util;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
+import org.jetbrains.idea.maven.model.MavenArtifact;
 import org.jetbrains.idea.maven.model.MavenPlugin;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -22,7 +21,7 @@ class VersionComparatorTest {
     @Test
     void compareDependencyVersions_newVersionAvailable_shouldReturnResult() {
         testee = new VersionComparator(List.of(getDependencyResponse()));
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.11.0"), Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency("3.11.0")), Collections.emptyList());
         assertFalse(result.isEmpty());
         assertEquals("org.apache.commons", result.get(0).getGroupId());
         assertEquals("commons-lang3", result.get(0).getArtifactId());
@@ -33,21 +32,21 @@ class VersionComparatorTest {
     @Test
     void compareDependencyVersions_noVersionFound_shouldReturnEmptyResult() {
         testee = new VersionComparator(Collections.emptyList());
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.11.0"), Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency("3.11.0")), Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
     void compareDependencyVersions_alreadyLatestVersionUsed_shouldReturnEmptyResult() {
         testee = new VersionComparator(Collections.emptyList());
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.12.0"), Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency("3.12.0")), Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
     @Test
     void compareDependencyVersions_wrongVersionUsed_shouldReturnEmptyResult() {
         testee = new VersionComparator(List.of(getDependencyResponse()));
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency("3.13.0"), Collections.emptyList());
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency("3.13.0")), Collections.emptyList());
         assertTrue(result.isEmpty());
     }
 
@@ -59,7 +58,7 @@ class VersionComparatorTest {
         dependency.setVersion("3.11.0");
 
         testee = new VersionComparator(List.of(getDependencyResponse()));
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency(null), List.of(dependency));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency(null)), List.of(dependency));
         assertFalse(result.isEmpty());
     }
 
@@ -71,7 +70,7 @@ class VersionComparatorTest {
         dependency.setVersion(null);
 
         testee = new VersionComparator(List.of(getDependencyResponse()));
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency(null), List.of(dependency));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency(null)), List.of(dependency));
         assertTrue(result.isEmpty());
     }
 
@@ -83,7 +82,7 @@ class VersionComparatorTest {
         dependency.setVersion("4.4");
 
         testee = new VersionComparator(List.of(getDependencyResponse()));
-        List<DependencyUpdateResult> result = testee.compareDependencyVersions(createModuleDependency(null), List.of(dependency));
+        List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency(null)), List.of(dependency));
         assertTrue(result.isEmpty());
     }
 
@@ -141,10 +140,9 @@ class VersionComparatorTest {
                 "}";
     }
 
-    private Map<String, String> createModuleDependency(String version) {
-        Map<String, String> map = new HashMap<>();
-        map.put("org.apache.commons:commons-lang3", version);
-        return map;
+    private MavenArtifact createModuleDependency(String version) {
+        return new MavenArtifact("org.apache.commons", "commons-lang3", version, null, null, null, null,
+                false, null, null, null, false, false);
     }
 
     private String getPluginResponse() {

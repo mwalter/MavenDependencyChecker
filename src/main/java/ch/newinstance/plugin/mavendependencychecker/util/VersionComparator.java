@@ -5,13 +5,13 @@ import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
+import org.jetbrains.idea.maven.model.MavenArtifact;
 import org.jetbrains.idea.maven.model.MavenPlugin;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class VersionComparator {
 
@@ -31,7 +31,7 @@ public class VersionComparator {
         this.queryResults = queryResults;
     }
 
-    public List<DependencyUpdateResult> compareDependencyVersions(Map<String, String> moduleDependencies, List<Dependency> mavenDependencies) {
+    public List<DependencyUpdateResult> compareDependencyVersions(List<MavenArtifact> moduleDependencies, List<Dependency> mavenDependencies) {
         this.mavenDependencies = mavenDependencies;
 
         List<DependencyUpdateResult> result = new ArrayList<>();
@@ -45,10 +45,14 @@ public class VersionComparator {
                 String latestVersion = docsObject.getString(VERSION);
                 ComparableVersion latestVersionComparable = new ComparableVersion(latestVersion);
 
-                String key = groupId + ":" + artifactId;
-
                 // if not managed by IntelliJ use current POM version instead
-                String currentVersion = moduleDependencies.get(key) != null ? moduleDependencies.get(key) : getCurrentMavenDependencyVersion(groupId, artifactId);
+                String currentVersion = null;
+                for (MavenArtifact mavenArtifact : moduleDependencies) {
+                    if (mavenArtifact.getGroupId().equals(groupId) && mavenArtifact.getArtifactId().equals(artifactId)) {
+                        currentVersion = mavenArtifact.getVersion() != null ? mavenArtifact.getVersion() : getCurrentMavenDependencyVersion(groupId, artifactId);
+                    }
+                }
+
 
                 if (currentVersion == null) {
                     // if still null skip version comparison
