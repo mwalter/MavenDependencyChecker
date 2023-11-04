@@ -23,11 +23,17 @@ import org.jetbrains.idea.maven.model.MavenPlugin;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 
 public class CheckMavenDependencyAction extends AnAction {
 
     private static final String POM_FILE = "pom.xml";
+
+    private static final String[] CANCEL_OPTIONS = {"Got it", "Never mind", "So what?", "Don't tell security!"};
+
+    private final Random random = new SecureRandom();
 
     @Override
     public void update(@NotNull AnActionEvent event) {
@@ -84,8 +90,9 @@ public class CheckMavenDependencyAction extends AnAction {
 
     private void showResultDialog(List<DependencyUpdateResult> dependenciesToUpdate) {
         String message = MessageCreator.createResultMessage(dependenciesToUpdate);
+        int cancelOptionIndex = random.nextInt(CANCEL_OPTIONS.length);
 
-        String[] options = {"Copy to Clipboard", "Got it"};
+        String[] options = {"Copy to Clipboard", CANCEL_OPTIONS[cancelOptionIndex]};
         ResultDialog resultDialog = new ResultDialog("You should consider upgrading the following project dependencies:\n\n" + message,
                 "Outdated Dependencies Found", options, 0, UIUtil.getWarningIcon());
         resultDialog.show();

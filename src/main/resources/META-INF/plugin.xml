@@ -14,6 +14,7 @@
                 text="Check Maven Dependencies"
                 description="Checks if there are updates available for all Maven project dependencies"
                 icon="icons/pluginIcon.png">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
     </actions>

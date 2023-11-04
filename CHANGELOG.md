@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [1.9.0] - 2023-11-04
+
+### Added
+- Added the option to access the plugin via the editor context menu
+
+### Fixed
+- Fixed deprecation of activity
+- Upgraded Gradle libraries
+- Support for IntelliJ 2023.3
+
 ## [1.8.1] - 2023-08-08
 
 ### Fixed
