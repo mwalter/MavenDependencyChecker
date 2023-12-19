@@ -17,6 +17,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 public class DependencyParser {
@@ -50,6 +51,11 @@ public class DependencyParser {
 
     public List<MavenArtifact> parseModuleDependencies() {
         List<MavenProject> mavenProjects = MavenProjectsManager.getInstance(pomFile.getProject()).getProjects();
+        if (mavenProjects.size() > 1) {
+            // handle multimodule project
+            Optional<MavenProject> selectedProject = getMavenProject(mavenProjects);
+            return selectedProject.map(MavenProject::getDependencies).orElse(Collections.emptyList());
+        }
         return mavenProjects.get(0).getDependencies();
     }
 
@@ -79,7 +85,12 @@ public class DependencyParser {
 
     public List<MavenPlugin> parseProjectPlugins() {
         List<MavenProject> mavenProjects = MavenProjectsManager.getInstance(pomFile.getProject()).getProjects();
-        return mavenProjects.get(0).getPlugins(); // check is always done for one project only
+        if (mavenProjects.size() > 1) {
+            // handle multimodule project
+            Optional<MavenProject> selectedProject = getMavenProject(mavenProjects);
+            return selectedProject.map(MavenProject::getPlugins).orElse(Collections.emptyList());
+        }
+        return mavenProjects.get(0).getPlugins();
     }
 
     private List<Dependency> parsePropertyPlaceholder(Model model, List<Dependency> dependencies) {
@@ -107,6 +118,16 @@ public class DependencyParser {
         }
 
         return dependencies;
+    }
+
+    private Optional<MavenProject> getMavenProject(List<MavenProject> mavenProjects) {
+        String projectName = pomFile.getParent().getName(); // the POM file always has a parent
+        for (MavenProject mavenProject : mavenProjects) {
+            if (projectName.equals(mavenProject.getName())) {
+                return Optional.of(mavenProject);
+            }
+        }
+        return Optional.empty();
     }
 
 }

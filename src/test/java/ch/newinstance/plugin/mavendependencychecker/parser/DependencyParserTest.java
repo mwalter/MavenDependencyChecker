@@ -2,6 +2,7 @@ package ch.newinstance.plugin.mavendependencychecker.parser;
 
 import com.intellij.psi.PsiFile;
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -83,6 +84,24 @@ class DependencyParserTest {
         assertTrue(dependencyWithReplacedArtifactId.isPresent());
         assertEquals("commons-lang3", dependencyWithReplacedArtifactId.get().getArtifactId());
     }
+
+    @Test
+    void parseMavenPlugins_emptyPom_shouldReturnEmptyCollection() {
+        when(pomFile.getText()).thenReturn("");
+
+        List<Plugin> result = parser.parseMavenPlugins();
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void parseMavenPlugins_somePlugins_shouldReturnPlugins() {
+        when(pomFile.getText()).thenReturn(readPomFile());
+
+        List<Plugin> result = parser.parseMavenPlugins();
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+    }
+
 
     private String readPomFile() {
         ClassLoader classLoader = getClass().getClassLoader();
