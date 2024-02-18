@@ -123,7 +123,7 @@ public class DependencyParser {
     private Optional<MavenProject> getMavenProject(List<MavenProject> mavenProjects) {
         String projectName = pomFile.getParent().getName(); // the POM file always has a parent
         for (MavenProject mavenProject : mavenProjects) {
-            if (projectName.equals(mavenProject.getName())) {
+            if (projectName.equals(mavenProject.getDisplayName())) {
                 return Optional.of(mavenProject);
             }
         }

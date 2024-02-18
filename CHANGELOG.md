@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.10.1] - 2024-02-18
+
+### Fixed an error where no project dependency information could be found
+
+- Fixed 
+
 ## [1.10.0] - 2023-12-19
 
 ### Added
