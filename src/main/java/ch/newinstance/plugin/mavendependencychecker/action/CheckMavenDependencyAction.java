@@ -1,6 +1,7 @@
 package ch.newinstance.plugin.mavendependencychecker.action;
 
 import ch.newinstance.plugin.mavendependencychecker.client.MavenSearchClient;
+import ch.newinstance.plugin.mavendependencychecker.config.MavenDependencyCheckerSettings;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 import ch.newinstance.plugin.mavendependencychecker.parser.DependencyParser;
 import ch.newinstance.plugin.mavendependencychecker.ui.ResultDialog;
@@ -11,6 +12,7 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.ui.UIUtil;
@@ -32,6 +34,9 @@ public class CheckMavenDependencyAction extends AnAction {
     private static final String POM_FILE = "pom.xml";
 
     private static final String[] CANCEL_OPTIONS = {"Got it", "Never mind", "So what?", "Don't tell security!"};
+    private static final String MSG_CONSIDER_UPGRADING = "You should consider upgrading the following project dependencies:\n\n";
+    private static final String MSG_OUTDATED_DEPENDENCIES = "Outdated Dependencies Found";
+    private static final String MSG_MAJOR_VERSION_IGNORED = "+++ Major version updates of dependencies are ignored! +++\n\n";
 
     private final Random random = new SecureRandom();
 
@@ -45,6 +50,8 @@ public class CheckMavenDependencyAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
+        MavenDependencyCheckerSettings settings = ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);
+
         PsiFile pomFile = event.getData(CommonDataKeys.PSI_FILE);
         DependencyParser parser = new DependencyParser(pomFile);
 
@@ -71,7 +78,7 @@ public class CheckMavenDependencyAction extends AnAction {
         MavenSearchClient searchClient = new MavenSearchClient();
         List<String> queryResults = searchClient.executeSearchQueries(queries);
 
-        VersionComparator versionComparator = new VersionComparator(queryResults);
+        VersionComparator versionComparator = new VersionComparator(queryResults, settings.isMajorVersionChangeIgnored());
         List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareDependencyVersions(moduleDependencies, mavenDependencies);
         dependenciesToUpdate.addAll(versionComparator.comparePluginVersions(mavenPlugins, plugins));
 
@@ -89,19 +96,32 @@ public class CheckMavenDependencyAction extends AnAction {
     }
 
     private void showResultDialog(List<DependencyUpdateResult> dependenciesToUpdate) {
-        String message = MessageCreator.createResultMessage(dependenciesToUpdate);
+        String results = MessageCreator.createResultMessage(dependenciesToUpdate);
         int cancelOptionIndex = random.nextInt(CANCEL_OPTIONS.length);
-
         String[] options = {"Copy to Clipboard", CANCEL_OPTIONS[cancelOptionIndex]};
-        ResultDialog resultDialog = new ResultDialog("You should consider upgrading the following project dependencies:\n\n" + message,
-                "Outdated Dependencies Found", options, 0, UIUtil.getWarningIcon());
-        resultDialog.show();
-        int buttonPressed = resultDialog.getExitCode();
+
+        int buttonPressed = showDialogAndGetUserInteraction(results, options);
 
         if (buttonPressed == 0) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(new StringSelection(message), null);
+            clipboard.setContents(new StringSelection(results), null);
         }
+    }
+
+    private static int showDialogAndGetUserInteraction(String results, String[] options) {
+        MavenDependencyCheckerSettings settings = ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);
+
+        String messageContent;
+        if (settings.isMajorVersionChangeIgnored()) {
+            messageContent = MSG_MAJOR_VERSION_IGNORED + MSG_CONSIDER_UPGRADING + results;
+        } else {
+            messageContent = MSG_CONSIDER_UPGRADING + results;
+        }
+
+        ResultDialog resultDialog = new ResultDialog(messageContent, MSG_OUTDATED_DEPENDENCIES, options, 0, UIUtil.getWarningIcon());
+        resultDialog.show();
+
+        return resultDialog.getExitCode();
     }
 
 }

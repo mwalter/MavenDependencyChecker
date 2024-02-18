@@ -20,9 +20,13 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable displayName="Maven Dependency Checker"
+                                 id="ch.newinstance.plugin.mavendependencychecker.config.SettingsConfigurable"
+                                 instance="ch.newinstance.plugin.mavendependencychecker.config.SettingsConfigurable"
+                                 parentId="tools"/>
+        <applicationService serviceImplementation="ch.newinstance.plugin.mavendependencychecker.config.MavenDependencyCheckerSettings"/>
         <notificationGroup displayType="BALLOON" id="MavenDependencyChecker"/>
         <postStartupActivity implementation="ch.newinstance.plugin.mavendependencychecker.ui.StartupNotification"/>
-        <applicationService serviceImplementation="ch.newinstance.plugin.mavendependencychecker.config.MavenDependencyCheckerSettings"/>
     </extensions>
 
 </idea-plugin>

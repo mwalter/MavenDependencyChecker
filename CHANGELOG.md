@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [1.11.0] - 2024-04-27
+
+### Added
+
+- Added feature to disable major version check in the settings
+
+### Fixed
+
+- Upgraded libraries
+ 
 ## [1.10.2] - 2024-04-04
 
 ### Fixed

@@ -42,15 +42,15 @@ intellij {
     plugins.set(listOf("maven"))
 
     dependencies {
-        implementation("org.json:json:20230227")
-        implementation("org.apache.maven:maven-model:3.9.2") {
+        implementation("org.json:json:20240303")
+        implementation("org.apache.maven:maven-model:3.9.6") {
             exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
         }
 
-        testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-        testImplementation("org.mockito:mockito-core:4.2.0")
-        testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
-        testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+        testImplementation("org.mockito:mockito-core:5.11.0")
+        testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+        testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 
         downloadSources.set(true)
     }
