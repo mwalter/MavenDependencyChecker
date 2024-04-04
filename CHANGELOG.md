@@ -4,11 +4,17 @@
 
 ## [Unreleased]
 
+## [1.10.2] - 2024-04-04
+
+### Fixed
+
+- Support for IntelliJ 2024.1
+
 ## [1.10.1] - 2024-02-18
 
-### Fixed an error where no project dependency information could be found
+### Fixed
 
-- Fixed 
+- Fixed an error where no project dependency information could be found
 
 ## [1.10.0] - 2023-12-19
 
@@ -139,3 +145,24 @@
 ### Added
 
 - Initial release.
+
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.1...HEAD
+[1.10.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.0...v1.10.1
+[1.10.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.9.0...v1.10.0
+[1.9.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.8.1...v1.9.0
+[1.8.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.8.0...v1.8.1
+[1.8.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.6.4...v1.7.0
+[1.6.4]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.6.3...v1.6.4
+[1.6.3]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.6.2...v1.6.3
+[1.6.2]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.6.1...v1.6.2
+[1.6.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.6.0...v1.6.1
+[1.6.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.5.0...v1.6.0
+[1.5.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.4.0...v1.5.0
+[1.4.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.3.1...v1.4.0
+[1.3.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/mwalter/MavenDependencyChecker/commits/v1.0.0
