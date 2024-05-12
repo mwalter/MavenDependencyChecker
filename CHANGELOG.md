@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [1.12.0] - 2024-05-12
+
+### Changed
+
+- Updated Jetbrains plugins
+- Updated GitHub build action scripts
+
 ## [1.11.0] - 2024-04-27
 
 ### Added
@@ -13,7 +20,7 @@
 ### Fixed
 
 - Upgraded libraries
- 
+
 ## [1.10.2] - 2024-04-04
 
 ### Fixed
@@ -156,7 +163,9 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.1...HEAD
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.11.0...HEAD
+[1.11.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.2...v1.11.0
+[1.10.2]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.1...v1.10.2
 [1.10.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.0...v1.10.1
 [1.10.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.8.1...v1.9.0
