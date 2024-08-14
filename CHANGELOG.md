@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.13.1] - 2024-08-13
+
+### Fixed
+
+- Fixed an issue in startup notification component
+
 ## [1.13.0] - 2024-08-12
 
 ### Fixed
@@ -169,7 +175,9 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.11.0...HEAD
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.0...HEAD
+[1.13.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.12.0...v1.13.0
+[1.12.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.11.0...v1.12.0
 [1.11.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.2...v1.11.0
 [1.10.2]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.1...v1.10.2
 [1.10.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.0...v1.10.1
