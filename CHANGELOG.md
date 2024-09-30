@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.14.0] - 2024-09-30
+
+### Fixed
+
+- Support for IntelliJ 2024.3
+
 ## [1.13.1] - 2024-08-13
 
 ### Fixed
@@ -175,7 +181,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.1...HEAD
+[1.13.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.11.0...v1.12.0
 [1.11.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.10.2...v1.11.0
