@@ -1,6 +1,7 @@
 .certs
 .gradle
 .idea
+.intellijPlatform
 .qodana
 .vscode
 .run
