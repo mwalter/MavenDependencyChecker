@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.15.0] - 2024-12-15
+
+### Added
+
+- Added option to open a generated POM in an editor tab
+
 ## [1.14.0] - 2024-09-30
 
 ### Fixed

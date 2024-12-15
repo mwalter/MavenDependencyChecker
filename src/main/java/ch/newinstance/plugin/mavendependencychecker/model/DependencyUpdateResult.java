@@ -12,11 +12,14 @@ public class DependencyUpdateResult {
 
     private final String latestVersion;
 
-    public DependencyUpdateResult(String groupId, String artifactId, String currentVersion, String latestVersion) {
+    private final boolean isDependency;
+
+    public DependencyUpdateResult(String groupId, String artifactId, String currentVersion, String latestVersion, boolean isDependency) {
         this.groupId = groupId;
         this.artifactId = artifactId;
         this.currentVersion = currentVersion;
         this.latestVersion = latestVersion;
+        this.isDependency = isDependency;
     }
 
     public String getGroupId() {
@@ -35,6 +38,10 @@ public class DependencyUpdateResult {
         return latestVersion;
     }
 
+    public boolean isDependency() {
+        return isDependency;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -42,6 +49,7 @@ public class DependencyUpdateResult {
                 .append("artifactId", artifactId)
                 .append("currentVersion", currentVersion)
                 .append("latestVersion", latestVersion)
+                .append("dependency", isDependency)
                 .toString();
     }
 }

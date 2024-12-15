@@ -15,7 +15,8 @@ A notification dialogue will show you which dependencies or plugins used in the 
 order to avoid security issues for example.
 
 You'll see the version of the dependencies you use right now and the latest versions available at [Maven Central][central].
-You can choose to keep the comparison results by copying the information to the system clipboard.
+You can choose to keep the comparison results by copying the information to the system clipboard or open a generated
+POM file with updated version information in an editor tab.
 
 The plugin does NOT modify your POM file.
 

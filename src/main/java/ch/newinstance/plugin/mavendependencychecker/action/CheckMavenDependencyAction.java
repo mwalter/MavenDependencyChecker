@@ -6,15 +6,21 @@ import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult
 import ch.newinstance.plugin.mavendependencychecker.parser.DependencyParser;
 import ch.newinstance.plugin.mavendependencychecker.ui.ResultDialog;
 import ch.newinstance.plugin.mavendependencychecker.util.MessageCreator;
+import ch.newinstance.plugin.mavendependencychecker.util.PomGenerator;
 import ch.newinstance.plugin.mavendependencychecker.util.QueryBuilder;
 import ch.newinstance.plugin.mavendependencychecker.util.VersionComparator;
+import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.ui.UIUtil;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
@@ -22,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.model.MavenArtifact;
 import org.jetbrains.idea.maven.model.MavenPlugin;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.security.SecureRandom;
@@ -33,7 +39,7 @@ public class CheckMavenDependencyAction extends AnAction {
 
     private static final String POM_FILE = "pom.xml";
 
-    private static final String[] CANCEL_OPTIONS = {"Got it", "Never mind", "So what?", "Don't tell security!"};
+    private static final String[] CANCEL_OPTIONS = {"Got it", "Never mind", "So what?", "Don't tell security!", "Don't panic", "Keep calm and update"};
     private static final String MSG_CONSIDER_UPGRADING = "You should consider upgrading the following project dependencies:\n\n";
     private static final String MSG_OUTDATED_DEPENDENCIES = "Outdated Dependencies Found";
     private static final String MSG_MAJOR_VERSION_IGNORED = "+++ Major version updates of dependencies are ignored! +++\n\n";
@@ -87,7 +93,7 @@ public class CheckMavenDependencyAction extends AnAction {
             return;
         }
 
-        showResultDialog(dependenciesToUpdate);
+        showResultDialog(dependenciesToUpdate, event.getProject());
     }
 
     @Override
@@ -95,20 +101,22 @@ public class CheckMavenDependencyAction extends AnAction {
         return ActionUpdateThread.BGT;
     }
 
-    private void showResultDialog(List<DependencyUpdateResult> dependenciesToUpdate) {
+    private void showResultDialog(List<DependencyUpdateResult> dependenciesToUpdate, Project project) {
         String results = MessageCreator.createResultMessage(dependenciesToUpdate);
         int cancelOptionIndex = random.nextInt(CANCEL_OPTIONS.length);
-        String[] options = {"Copy to Clipboard", CANCEL_OPTIONS[cancelOptionIndex]};
+        String[] options = {"Copy to Clipboard", "Open in Editor", CANCEL_OPTIONS[cancelOptionIndex]};
 
         int buttonPressed = showDialogAndGetUserInteraction(results, options);
 
         if (buttonPressed == 0) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(results), null);
+        } else if (buttonPressed == 1) {
+            openEditorTab(dependenciesToUpdate, project);
         }
     }
 
-    private static int showDialogAndGetUserInteraction(String results, String[] options) {
+    private int showDialogAndGetUserInteraction(String results, String[] options) {
         MavenDependencyCheckerSettings settings = ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);
 
         String messageContent;
@@ -122,6 +130,13 @@ public class CheckMavenDependencyAction extends AnAction {
         resultDialog.show();
 
         return resultDialog.getExitCode();
+    }
+
+    private void openEditorTab(List<DependencyUpdateResult> dependenciesToUpdate, Project project) {
+        PomGenerator pomGenerator = new PomGenerator();
+        String pom = pomGenerator.generatePom(dependenciesToUpdate);
+        PsiFile pomFile = PsiFileFactory.getInstance(project).createFileFromText("generatedPom.xml", XmlFileType.INSTANCE, pom);
+        FileEditorManager.getInstance(project).openTextEditor(new OpenFileDescriptor(project, pomFile.getViewProvider().getVirtualFile()), true);
     }
 
 }

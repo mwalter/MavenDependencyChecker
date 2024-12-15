@@ -62,7 +62,7 @@ public class VersionComparator {
 
                 ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
                 if (latestVersionComparable.compareTo(currentVersionComparable) > 0) {
-                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion, dependencyInfo.latestVersion()));
+                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion, dependencyInfo.latestVersion(), true));
                 }
             } catch (JSONException je) {
                 // ignore
@@ -94,7 +94,7 @@ public class VersionComparator {
 
                 ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
                 if (latestVersionComparable.compareTo(currentVersionComparable) > 0) {
-                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion, dependencyInfo.latestVersion()));
+                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion, dependencyInfo.latestVersion(), false));
                 }
             } catch (JSONException je) {
                 // ignore

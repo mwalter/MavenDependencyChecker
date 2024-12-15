@@ -43,13 +43,13 @@ intellij {
 
     dependencies {
         implementation("org.json:json:20240303")
-        implementation("org.apache.maven:maven-model:3.9.6") {
+        implementation("org.apache.maven:maven-model:3.9.9") {
             exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
         }
 
-        testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-        testImplementation("org.mockito:mockito-core:5.11.0")
-        testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
+        testImplementation("org.mockito:mockito-core:5.14.2")
+        testImplementation("org.mockito:mockito-junit-jupiter:5.14.2")
         testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 
         downloadSources.set(true)
