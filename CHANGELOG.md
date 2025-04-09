@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [1.16.0] - 2025-04-09
+
+### Fixed
+
+- Support for IntelliJ 2025.1
+- Updated to Java 21
+
 ## [1.15.0] - 2024-12-15
 
 ### Added
@@ -187,7 +194,9 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.1...HEAD
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.15.0...HEAD
+[1.15.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.14.0...v1.15.0
+[1.14.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.1...v1.14.0
 [1.13.1]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.11.0...v1.12.0
