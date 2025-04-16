@@ -20,7 +20,7 @@ junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "ju
 mavenmodel = { group = "org.apache.maven", name = "maven-model", version.ref = "mavenmodel" }
 mockitocore = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockitojunitjupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
-mockwebserver = { group = "org.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
 opentest4j = { group = "org.opentest4j", name = "opentest4j", version.ref = "opentest4j" }
 
 [plugins]
