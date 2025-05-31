@@ -11,9 +11,9 @@ import org.jetbrains.annotations.Nullable;
 @State(name = "MavenDependencyCheckerSettings", storages = {@Storage(value = "MavenDependencyCheckerSettings.xml")})
 public class MavenDependencyCheckerSettings implements PersistentStateComponent<MavenDependencyCheckerSettings> {
 
-    public String installedVersion = "1.0";
+    private String installedVersion = "1.0";
 
-    public boolean majorVersionChangeIgnored = false;
+    private boolean majorVersionChangeIgnored = false;
 
     static MavenDependencyCheckerSettings getInstance() {
         return ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);

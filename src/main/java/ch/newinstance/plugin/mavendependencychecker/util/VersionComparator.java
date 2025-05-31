@@ -16,11 +16,12 @@ import java.util.List;
 
 public class VersionComparator {
 
-    private static final String RESPONSE = "response";
-    private static final String DOCS_ARRAY = "docs";
-    private static final String VERSION = "v";
-    private static final String GROUP = "g";
     private static final String ARTIFACT = "a";
+    private static final String DOCS_ARRAY = "docs";
+    private static final String GROUP = "g";
+    private static final String LATEST_VERSION = "latestVersion";
+    private static final String RESPONSE = "response";
+    private static final String VERSION = "v";
 
     private final List<String> queryResults;
     private final boolean isCheckMinorAndPatchVersionsOnly;
@@ -126,7 +127,11 @@ public class VersionComparator {
         JSONObject jsonObject = new JSONObject(json);
         JSONObject response = jsonObject.getJSONObject(RESPONSE);
         JSONObject docsObject = response.getJSONArray(DOCS_ARRAY).getJSONObject(0);
-        return new DependencyInfo(docsObject.getString(GROUP), docsObject.getString(ARTIFACT), docsObject.getString(VERSION));
+        if (docsObject.has(LATEST_VERSION)) {
+            return new DependencyInfo(docsObject.getString(GROUP), docsObject.getString(ARTIFACT), docsObject.getString(LATEST_VERSION));
+        } else {
+            return new DependencyInfo(docsObject.getString(GROUP), docsObject.getString(ARTIFACT), docsObject.getString(VERSION));
+        }
     }
 
     private record DependencyInfo(String groupId, String artifactId, String latestVersion) {

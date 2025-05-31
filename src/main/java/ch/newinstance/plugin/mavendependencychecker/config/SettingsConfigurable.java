@@ -30,19 +30,19 @@ public class SettingsConfigurable implements Configurable {
     @Override
     public boolean isModified() {
         MavenDependencyCheckerSettings settings = MavenDependencyCheckerSettings.getInstance();
-        return settingsComponent.getIgnoreMajorVersionChanges() != settings.majorVersionChangeIgnored;
+        return settingsComponent.getIgnoreMajorVersionChanges() != settings.isMajorVersionChangeIgnored();
     }
 
     @Override
     public void apply() {
         MavenDependencyCheckerSettings settings = MavenDependencyCheckerSettings.getInstance();
-        settings.majorVersionChangeIgnored = settingsComponent.getIgnoreMajorVersionChanges();
+        settings.setMajorVersionChangeIgnored(settingsComponent.getIgnoreMajorVersionChanges());
     }
 
     @Override
     public void reset() {
         MavenDependencyCheckerSettings settings = MavenDependencyCheckerSettings.getInstance();
-        settingsComponent.setIgnoreMajorVersionChanges(settings.majorVersionChangeIgnored);
+        settingsComponent.setIgnoreMajorVersionChanges(settings.isMajorVersionChangeIgnored());
     }
 
     @Override

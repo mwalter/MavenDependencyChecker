@@ -19,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MavenSearchClientTest {
 
-    final MockWebServer mockWebServer = new MockWebServer();
+    private final MockWebServer mockWebServer = new MockWebServer();
 
-    final MavenSearchClient testee = new MavenSearchClient();
+    private final MavenSearchClient testee = new MavenSearchClient();
 
     @Test
     void executeSearchQueries_emptyList_shouldReturnNoResult() {
