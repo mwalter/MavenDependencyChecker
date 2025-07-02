@@ -14,8 +14,8 @@ import java.util.concurrent.Executors;
 
 public class MavenSearchClient {
 
-    private static final String MAVEN_BASE_SEARCH_URI = "https://search.maven.org/solrsearch/select?wt=json&q=";
-    private static final String MAVEN_TIMESTAMP_SEARCH_URI = "https://search.maven.org/solrsearch/select?wt=json&core=gav&q=";
+    private static final String CENTRAL_SONATYPE_SEARCH_URI = "https://central.sonatype.com/solrsearch/select?wt=json&sort=v+desc&q=";
+    private static final String MAVEN_SEARCH_URI = "https://search.maven.org/solrsearch/select?wt=json&core=gav&q=";
 
     private static final ExecutorService executorService = Executors.newFixedThreadPool(5);
 
@@ -48,7 +48,7 @@ public class MavenSearchClient {
     private static List<String> executeBaseSearch(List<String> searchQueries) {
         List<CompletableFuture<String>> result = searchQueries.stream()
                 .map(query -> httpClient.sendAsync(
-                                HttpRequest.newBuilder(URI.create(MAVEN_BASE_SEARCH_URI + query)).GET().build(),
+                                HttpRequest.newBuilder(URI.create(CENTRAL_SONATYPE_SEARCH_URI + query)).GET().build(),
                                 HttpResponse.BodyHandlers.ofString())
                         .thenApply(HttpResponse::body))
                 .toList();
@@ -67,7 +67,7 @@ public class MavenSearchClient {
     private static List<String> executeTimestampSearch(List<String> searchQueries) {
         List<CompletableFuture<String>> result = searchQueries.stream()
                 .map(query -> httpClient.sendAsync(
-                                HttpRequest.newBuilder(URI.create(MAVEN_TIMESTAMP_SEARCH_URI + query)).GET().build(),
+                                HttpRequest.newBuilder(URI.create(MAVEN_SEARCH_URI + query)).GET().build(),
                                 HttpResponse.BodyHandlers.ofString())
                         .thenApply(HttpResponse::body))
                 .toList();

@@ -56,7 +56,7 @@ public class DependencyParser {
             Optional<MavenProject> selectedProject = getMavenProject(mavenProjects);
             return selectedProject.map(MavenProject::getDependencies).orElse(Collections.emptyList());
         }
-        return mavenProjects.get(0).getDependencies();
+        return mavenProjects.getFirst().getDependencies();
     }
 
     public List<Plugin> parseMavenPlugins() {
@@ -90,7 +90,7 @@ public class DependencyParser {
             Optional<MavenProject> selectedProject = getMavenProject(mavenProjects);
             return selectedProject.map(MavenProject::getPlugins).orElse(Collections.emptyList());
         }
-        return mavenProjects.get(0).getPlugins();
+        return mavenProjects.getFirst().getPlugins();
     }
 
     private List<Dependency> parsePropertyPlaceholder(Model model, List<Dependency> dependencies) {

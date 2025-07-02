@@ -25,10 +25,10 @@ class VersionComparatorTest {
         testee = new VersionComparator(List.of(getResponse_apache_commons_lang3_v3120()), false);
         List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency("3.11.0")), Collections.emptyList());
         assertFalse(result.isEmpty());
-        assertEquals("org.apache.commons", result.get(0).getGroupId());
-        assertEquals("commons-lang3", result.get(0).getArtifactId());
-        assertEquals("3.11.0", result.get(0).getCurrentVersion());
-        assertEquals("3.12.0", result.get(0).getLatestVersion());
+        assertEquals("org.apache.commons", result.getFirst().getGroupId());
+        assertEquals("commons-lang3", result.getFirst().getArtifactId());
+        assertEquals("3.11.0", result.getFirst().getCurrentVersion());
+        assertEquals("3.12.0", result.getFirst().getLatestVersion());
     }
 
     @Test
@@ -100,10 +100,10 @@ class VersionComparatorTest {
         testee = new VersionComparator(List.of(getResponse_apache_commons_lang3_v3120(), getResponse_apache_commons_lang3_v500()), true);
         List<DependencyUpdateResult> result = testee.compareDependencyVersions(List.of(createModuleDependency("3.11.0")), Collections.emptyList());
         assertFalse(result.isEmpty());
-        assertEquals("org.apache.commons", result.get(0).getGroupId());
-        assertEquals("commons-lang3", result.get(0).getArtifactId());
-        assertEquals("3.11.0", result.get(0).getCurrentVersion());
-        assertEquals("3.12.0", result.get(0).getLatestVersion());
+        assertEquals("org.apache.commons", result.getFirst().getGroupId());
+        assertEquals("commons-lang3", result.getFirst().getArtifactId());
+        assertEquals("3.11.0", result.getFirst().getCurrentVersion());
+        assertEquals("3.12.0", result.getFirst().getLatestVersion());
     }
 
     @Test
@@ -111,10 +111,10 @@ class VersionComparatorTest {
         testee = new VersionComparator(List.of(getResponse_maven_compiler_plugin_v3110()), false);
         List<DependencyUpdateResult> result = testee.comparePluginVersions(List.of(createMavenPlugin("3.10.0")), Collections.emptyList());
         assertFalse(result.isEmpty());
-        assertEquals("org.apache.maven.plugins", result.get(0).getGroupId());
-        assertEquals("maven-compiler-plugin", result.get(0).getArtifactId());
-        assertEquals("3.10.0", result.get(0).getCurrentVersion());
-        assertEquals("3.11.0", result.get(0).getLatestVersion());
+        assertEquals("org.apache.maven.plugins", result.getFirst().getGroupId());
+        assertEquals("maven-compiler-plugin", result.getFirst().getArtifactId());
+        assertEquals("3.10.0", result.getFirst().getCurrentVersion());
+        assertEquals("3.11.0", result.getFirst().getLatestVersion());
     }
 
     @Test
@@ -184,4 +184,5 @@ class VersionComparatorTest {
         return new MavenPlugin("org.apache.maven.plugins", "maven-compiler-plugin", version,
                 false, false, null, Collections.emptyList(), Collections.emptyList());
     }
+
 }
