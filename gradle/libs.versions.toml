@@ -1,17 +1,17 @@
 [versions]
 # libraries
 json = "20250107"
-junit = "5.13.0"
-mavenmodel = "3.9.9"
-mockito = "5.17.0"
-mockwebserver = "4.12.0"
+junit = "5.13.3"
+mavenmodel = "3.9.10"
+mockito = "5.18.0"
+mockwebserver = "5.1.0"
 
 # plugins
 changelog = "2.2.1"
-intelliJPlatform = "2.5.0"
-kotlin = "2.1.20"
+intelliJPlatform = "2.6.0"
+kotlin = "2.2.0"
 kover = "0.9.1"
-qodana = "2024.3.4"
+qodana = "2025.1.1"
 
 [libraries]
 json = { group = "org.json", name = "json", version.ref = "json" }
