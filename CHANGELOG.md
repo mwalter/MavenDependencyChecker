@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+### Added
+
+- Option to exclude prerelease and build versions like 1.2.3-SNAPSHOT. Can be enabled in the plugin's settings.
+
+## [1.17.0] - 2025-07-02
+
+### Fixed
+
+- In some rare cases the latest release version was not determined correctly
+
 ## [1.16.0] - 2025-04-09
 
 ### Fixed

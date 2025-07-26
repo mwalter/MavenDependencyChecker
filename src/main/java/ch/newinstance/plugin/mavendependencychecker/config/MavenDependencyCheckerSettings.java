@@ -14,6 +14,7 @@ public class MavenDependencyCheckerSettings implements PersistentStateComponent<
     private String installedVersion = "1.0";
 
     private boolean majorVersionChangeIgnored = false;
+    private boolean prereleaseVersionsExcluded = false;
 
     static MavenDependencyCheckerSettings getInstance() {
         return ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);
@@ -33,6 +34,14 @@ public class MavenDependencyCheckerSettings implements PersistentStateComponent<
 
     public void setMajorVersionChangeIgnored(boolean majorVersionChangeIgnored) {
         this.majorVersionChangeIgnored = majorVersionChangeIgnored;
+    }
+
+    public boolean isPrereleaseVersionsExcluded() {
+        return prereleaseVersionsExcluded;
+    }
+
+    public void setPrereleaseVersionsExcluded(boolean prereleaseVersionsExcluded) {
+        this.prereleaseVersionsExcluded = prereleaseVersionsExcluded;
     }
 
     @Override

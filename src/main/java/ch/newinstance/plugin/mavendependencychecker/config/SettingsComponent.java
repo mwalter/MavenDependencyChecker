@@ -9,11 +9,14 @@ import javax.swing.JPanel;
 public class SettingsComponent {
 
     private final JPanel mainPanel;
+
+    private final JBCheckBox excludePrereleaseVersions = new JBCheckBox("Exclude prerelease and build versions");
     private final JBCheckBox ignoreMajorVersionChanges = new JBCheckBox("Ignore major version changes");
 
     public SettingsComponent() {
         mainPanel = FormBuilder.createFormBuilder()
-                .addComponent(ignoreMajorVersionChanges, 1)
+                .addComponent(excludePrereleaseVersions, 1)
+                .addComponent(ignoreMajorVersionChanges, 2)
                 .addComponentFillVertically(new JPanel(), 0)
                 .getPanel();
     }
@@ -23,7 +26,15 @@ public class SettingsComponent {
     }
 
     public JComponent getPreferredFocusedComponent() {
-        return ignoreMajorVersionChanges;
+        return excludePrereleaseVersions;
+    }
+
+    public boolean getExcludePrereleaseVersions() {
+        return excludePrereleaseVersions.isSelected();
+    }
+
+    public void seteEcludePrereleaseVersions(boolean newStatus) {
+        excludePrereleaseVersions.setSelected(newStatus);
     }
 
     public boolean getIgnoreMajorVersionChanges() {
@@ -33,4 +44,5 @@ public class SettingsComponent {
     public void setIgnoreMajorVersionChanges(boolean newStatus) {
         ignoreMajorVersionChanges.setSelected(newStatus);
     }
+
 }

@@ -3,7 +3,7 @@
     <id>ch.newinstance.plugin.mavendependencychecker</id>
     <name>Maven Dependency Checker</name>
     <version>1.0.0</version>
-    <vendor>Marc Walter</vendor>
+    <vendor email="mwalter@newinstance.ch" url="https://github.com/mwalter/MavenDependencyChecker">Marc Walter</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.idea.maven</depends>

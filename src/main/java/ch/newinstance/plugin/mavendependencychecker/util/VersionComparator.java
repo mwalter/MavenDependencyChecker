@@ -1,5 +1,6 @@
 package ch.newinstance.plugin.mavendependencychecker.util;
 
+import ch.newinstance.plugin.mavendependencychecker.config.MavenDependencyCheckerSettings;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 
 import org.apache.maven.artifact.versioning.ComparableVersion;
@@ -24,11 +25,11 @@ public class VersionComparator {
     private static final String VERSION = "v";
 
     private final List<String> queryResults;
-    private final boolean isCheckMinorAndPatchVersionsOnly;
+    private final MavenDependencyCheckerSettings settings;
 
-    public VersionComparator(List<String> queryResults, boolean isCheckMinorAndPatchVersionsOnly) {
+    public VersionComparator(List<String> queryResults, MavenDependencyCheckerSettings settings) {
         this.queryResults = queryResults;
-        this.isCheckMinorAndPatchVersionsOnly = isCheckMinorAndPatchVersionsOnly;
+        this.settings = settings;
     }
 
     public List<DependencyUpdateResult> compareDependencyVersions(List<MavenArtifact> moduleDependencies, List<Dependency> mavenDependencies) {
@@ -52,13 +53,17 @@ public class VersionComparator {
                     continue;
                 }
 
-                if (isCheckMinorAndPatchVersionsOnly) {
+                if (settings.isMajorVersionChangeIgnored()) {
                     DefaultArtifactVersion currentDefaultVersion = new DefaultArtifactVersion(currentVersion);
                     DefaultArtifactVersion latestDefaultVersion = new DefaultArtifactVersion(dependencyInfo.latestVersion());
                     if (latestDefaultVersion.getMajorVersion() > currentDefaultVersion.getMajorVersion()) {
                         // here we do not want to add major updates to the list of results
                         continue;
                     }
+                }
+
+                if (isPrereleaseVersionExcluded(settings.isPrereleaseVersionsExcluded(), dependencyInfo.latestVersion())) {
+                    continue;
                 }
 
                 ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
@@ -90,6 +95,10 @@ public class VersionComparator {
 
                 if (currentVersion == null) {
                     // if still null skip version comparison
+                    continue;
+                }
+
+                if (isPrereleaseVersionExcluded(settings.isPrereleaseVersionsExcluded(), dependencyInfo.latestVersion())) {
                     continue;
                 }
 
@@ -132,6 +141,14 @@ public class VersionComparator {
         } else {
             return new DependencyInfo(docsObject.getString(GROUP), docsObject.getString(ARTIFACT), docsObject.getString(VERSION));
         }
+    }
+
+    private boolean isPrereleaseVersionExcluded(boolean isExcluded, String latestVersion) {
+        return isExcluded && containsPrereleaseOrBuildVersion(latestVersion);
+    }
+
+    private boolean containsPrereleaseOrBuildVersion(String latestVersion) {
+        return latestVersion.contains("+") || latestVersion.contains("-") || latestVersion.matches(".*[a-zA-Z]+.*");
     }
 
     private record DependencyInfo(String groupId, String artifactId, String latestVersion) {
