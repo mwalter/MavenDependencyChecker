@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.18.0] - 2025-11-07
+
 ### Added
 
 - Option to exclude prerelease and build versions like 1.2.3-SNAPSHOT. Can be enabled in the plugin's settings.
@@ -204,7 +206,9 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.16.0...HEAD
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.18.0...HEAD
+[1.18.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.17.0...v1.18.0
+[1.17.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.16.0...v1.17.0
 [1.16.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.15.0...v1.16.0
 [1.15.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.13.1...v1.14.0
