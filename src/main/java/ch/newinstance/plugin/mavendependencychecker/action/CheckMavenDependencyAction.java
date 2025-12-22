@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.idea.maven.model.MavenArtifact;
 import org.jetbrains.idea.maven.model.MavenPlugin;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.security.SecureRandom;
@@ -56,34 +56,35 @@ public class CheckMavenDependencyAction extends AnAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
+        // read settings
         MavenDependencyCheckerSettings settings = ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);
 
+        // read dependencies and plugins from POM file
         PsiFile pomFile = event.getData(CommonDataKeys.PSI_FILE);
         DependencyParser parser = new DependencyParser(pomFile);
-
         List<Dependency> mavenDependencies = parser.parseMavenDependencies();
         List<Plugin> plugins = parser.parseMavenPlugins();
-
         if (mavenDependencies.isEmpty() && plugins.isEmpty()) {
             Messages.showInfoMessage("No Maven dependencies or plugins found in POM file.\nNothing to check.", "No Maven Project Dependencies");
             return;
         }
 
+        // read dependencies and plugin from IntelliJ Maven model
         List<MavenArtifact> moduleDependencies = parser.parseModuleDependencies();
         List<MavenPlugin> mavenPlugins = parser.parseProjectPlugins();
-
         if (moduleDependencies.isEmpty() && mavenPlugins.isEmpty()) {
             Messages.showInfoMessage("No project dependency information found.\nNothing to check.", "No Project Dependencies");
             return;
         }
 
+        // fetch latest dependency and plugin versions from Maven Central
         QueryBuilder queryBuilder = new QueryBuilder();
         List<String> queries = queryBuilder.buildDependencyQueries(mavenDependencies);
         queries.addAll(queryBuilder.buildPluginQueries(plugins));
-
         MavenSearchClient searchClient = new MavenSearchClient();
         List<String> queryResults = searchClient.executeSearchQueries(queries);
 
+        // compare current dependencies and plugins with latest version
         VersionComparator versionComparator = new VersionComparator(queryResults, settings);
         List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareDependencyVersions(moduleDependencies, mavenDependencies);
         dependenciesToUpdate.addAll(versionComparator.comparePluginVersions(mavenPlugins, plugins));
@@ -93,6 +94,7 @@ public class CheckMavenDependencyAction extends AnAction {
             return;
         }
 
+        // show dependencies and plugins which can be updated
         showResultDialog(dependenciesToUpdate, event.getProject());
     }
 
