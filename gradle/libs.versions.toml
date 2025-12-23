@@ -1,21 +1,24 @@
 [versions]
 # libraries
 json = "20250107"
-junit = "5.13.3"
+junit = "5.14.1"
+platformlauncher = "1.14.1"
 mavenmodel = "3.9.10"
 mockito = "5.18.0"
 mockwebserver = "5.1.0"
 
 # plugins
-changelog = "2.4.0"
-intelliJPlatform = "2.9.0"
-kotlin = "2.1.20"
-kover = "0.9.1"
-qodana = "2025.1.1"
+changelog = "2.5.0"
+intelliJPlatform = "2.10.5"
+kotlin = "2.2.21"
+kover = "0.9.3"
+qodana = "2025.2.2"
 
 [libraries]
 json = { group = "org.json", name = "json", version.ref = "json" }
-junit = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+junitjupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+junitjupiterengine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+junitplatformlauncher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "platformlauncher" }
 mavenmodel = { group = "org.apache.maven", name = "maven-model", version.ref = "mavenmodel" }
 mockitocore = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockitojunitjupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }

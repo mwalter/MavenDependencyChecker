@@ -15,8 +15,10 @@ group = providers.gradleProperty("pluginGroup").get()
 version = providers.gradleProperty("pluginVersion").get()
 
 // Set the JVM language level used to build the project.
-kotlin {
-    jvmToolchain(21)
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 // Configure project's dependencies
@@ -36,10 +38,12 @@ dependencies {
         exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
     }
 
-    testImplementation(libs.junit)
+    testImplementation(libs.junitjupiter)
     testImplementation(libs.mockitocore)
     testImplementation(libs.mockitojunitjupiter)
     testImplementation(libs.mockwebserver)
+    testRuntimeOnly(libs.junitjupiterengine)
+    testRuntimeOnly(libs.junitplatformlauncher)
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html#setting-up-intellij-platform
     intellijPlatform {
@@ -144,6 +148,10 @@ tasks {
 
     publishPlugin {
         dependsOn(patchChangelog)
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
