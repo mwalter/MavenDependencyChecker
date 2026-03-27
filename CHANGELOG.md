@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-03-27
+
+### Fixed
+
+- Removed quotations in queries as they are no longer needed
+- Support for IntelliJ 2026.1
+- Upgraded Gradle to 9.2.1
+
 ## [1.19.0] - 2025-12-09
 
 ### Fixed
@@ -212,7 +220,8 @@
 
 - Initial release.
 
-[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.19.0...HEAD
+[Unreleased]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.20.0...HEAD
+[1.20.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.19.0...v1.20.0
 [1.19.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.18.0...v1.19.0
 [1.18.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.17.0...v1.18.0
 [1.17.0]: https://github.com/mwalter/MavenDependencyChecker/compare/v1.16.0...v1.17.0
