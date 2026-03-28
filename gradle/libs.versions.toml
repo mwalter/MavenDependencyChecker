@@ -3,7 +3,7 @@
 json = "20250107"
 junit = "5.14.1"
 platformlauncher = "1.14.1"
-mavenmodel = "3.9.10"
+mavenmodel = "3.9.14"
 mockito = "5.18.0"
 mockwebserver = "5.1.0"
 
