@@ -3,6 +3,7 @@ package ch.newinstance.plugin.mavendependencychecker.util;
 import ch.newinstance.plugin.mavendependencychecker.config.MavenDependencyCheckerSettings;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.model.Dependency;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class VersionComparator {
 
@@ -40,21 +42,14 @@ public class VersionComparator {
                 ComparableVersion latestVersionComparable = new ComparableVersion(dependencyInfo.latestVersion());
 
                 // if not managed by IntelliJ use current POM version instead
-                String currentVersion = null;
-                for (MavenArtifact mavenArtifact : moduleDependencies) {
-                    if (mavenArtifact.getGroupId().equals(dependencyInfo.groupId()) && mavenArtifact.getArtifactId().equals(dependencyInfo.artifactId())) {
-                        currentVersion = mavenArtifact.getVersion() != null ? mavenArtifact.getVersion() :
-                                getCurrentMavenDependencyVersion(mavenDependencies, dependencyInfo.groupId(), dependencyInfo.artifactId());
-                    }
-                }
-
-                if (currentVersion == null) {
-                    // if still null skip version comparison
+                Optional<String> currentVersion = extractCurrentDependencyVersionFromPom(moduleDependencies, mavenDependencies, dependencyInfo);
+                if (currentVersion.isEmpty()) {
+                    // if not available skip version comparison
                     continue;
                 }
 
                 if (settings.isMajorVersionChangeIgnored()) {
-                    DefaultArtifactVersion currentDefaultVersion = new DefaultArtifactVersion(currentVersion);
+                    DefaultArtifactVersion currentDefaultVersion = new DefaultArtifactVersion(currentVersion.get());
                     DefaultArtifactVersion latestDefaultVersion = new DefaultArtifactVersion(dependencyInfo.latestVersion());
                     if (latestDefaultVersion.getMajorVersion() > currentDefaultVersion.getMajorVersion()) {
                         // here we do not want to add major updates to the list of results
@@ -66,9 +61,8 @@ public class VersionComparator {
                     continue;
                 }
 
-                ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
-                if (latestVersionComparable.compareTo(currentVersionComparable) > 0) {
-                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion, dependencyInfo.latestVersion(), true));
+                if (isNewerVersionAvailable(latestVersionComparable, currentVersion.get())) {
+                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion.get(), dependencyInfo.latestVersion(), true));
                 }
             } catch (JSONException je) {
                 // ignore
@@ -85,16 +79,9 @@ public class VersionComparator {
                 ComparableVersion latestVersionComparable = new ComparableVersion(dependencyInfo.latestVersion());
 
                 // if not managed by IntelliJ use current POM version instead
-                String currentVersion = null;
-                for (MavenPlugin projectPlugin : projectPlugins) {
-                    if (projectPlugin.getGroupId().equals(dependencyInfo.groupId()) && projectPlugin.getArtifactId().equals(dependencyInfo.artifactId())) {
-                        currentVersion = projectPlugin.getVersion() != null ? projectPlugin.getVersion() :
-                                getCurrentMavenPluginVersion(mavenPlugins, dependencyInfo.groupId(), dependencyInfo.artifactId());
-                    }
-                }
-
-                if (currentVersion == null) {
-                    // if still null skip version comparison
+                Optional<String> currentVersion = extractCurrentPluginVersionFromPom(projectPlugins, mavenPlugins, dependencyInfo);
+                if (currentVersion.isEmpty()) {
+                    // if not available skip version comparison
                     continue;
                 }
 
@@ -102,9 +89,8 @@ public class VersionComparator {
                     continue;
                 }
 
-                ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
-                if (latestVersionComparable.compareTo(currentVersionComparable) > 0) {
-                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion, dependencyInfo.latestVersion(), false));
+                if (isNewerVersionAvailable(latestVersionComparable, currentVersion.get())) {
+                    result.add(new DependencyUpdateResult(dependencyInfo.groupId(), dependencyInfo.artifactId(), currentVersion.get(), dependencyInfo.latestVersion(), true));
                 }
             } catch (JSONException je) {
                 // ignore
@@ -114,22 +100,42 @@ public class VersionComparator {
         return result;
     }
 
-    private String getCurrentMavenDependencyVersion(List<Dependency> mavenDependencies, String groupId, String artifactId) {
-        for (Dependency mavenDependency : mavenDependencies) {
-            if (mavenDependency.getGroupId().equals(groupId) && mavenDependency.getArtifactId().equals(artifactId)) {
-                return mavenDependency.getVersion();
+    private Optional<String> extractCurrentDependencyVersionFromPom(List<MavenArtifact> moduleDependencies, List<Dependency> mavenDependencies, DependencyInfo dependencyInfo) {
+        for (MavenArtifact mavenArtifact : moduleDependencies) {
+            if (mavenArtifact.getGroupId().equals(dependencyInfo.groupId()) && mavenArtifact.getArtifactId().equals(dependencyInfo.artifactId())) {
+                return mavenArtifact.getVersion() != null ? Optional.of(mavenArtifact.getVersion()) :
+                        getCurrentMavenDependencyVersion(mavenDependencies, dependencyInfo.groupId(), dependencyInfo.artifactId());
             }
         }
-        return null;
+        return Optional.empty();
     }
 
-    private String getCurrentMavenPluginVersion(List<Plugin> mavenPlugins, String groupId, String artifactId) {
-        for (Plugin mavenPlugin : mavenPlugins) {
-            if (mavenPlugin.getGroupId().equals(groupId) && mavenPlugin.getArtifactId().equals(artifactId)) {
-                return mavenPlugin.getVersion();
+    private Optional<String> getCurrentMavenDependencyVersion(List<Dependency> mavenDependencies, String groupId, String artifactId) {
+        for (Dependency mavenDependency : mavenDependencies) {
+            if (mavenDependency.getGroupId().equals(groupId) && mavenDependency.getArtifactId().equals(artifactId) && StringUtils.isNotBlank(mavenDependency.getVersion())) {
+                return Optional.of(mavenDependency.getVersion());
             }
         }
-        return null;
+        return Optional.empty();
+    }
+
+    private Optional<String> extractCurrentPluginVersionFromPom(List<MavenPlugin> projectPlugins, List<Plugin> mavenPlugins, DependencyInfo dependencyInfo) {
+        for (MavenPlugin projectPlugin : projectPlugins) {
+            if (projectPlugin.getGroupId().equals(dependencyInfo.groupId()) && projectPlugin.getArtifactId().equals(dependencyInfo.artifactId())) {
+                return projectPlugin.getVersion() != null ? Optional.of(projectPlugin.getVersion()) :
+                        getCurrentMavenPluginVersion(mavenPlugins, dependencyInfo.groupId(), dependencyInfo.artifactId());
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<String> getCurrentMavenPluginVersion(List<Plugin> mavenPlugins, String groupId, String artifactId) {
+        for (Plugin mavenPlugin : mavenPlugins) {
+            if (mavenPlugin.getGroupId().equals(groupId) && mavenPlugin.getArtifactId().equals(artifactId)) {
+                return Optional.of(mavenPlugin.getVersion());
+            }
+        }
+        return Optional.empty();
     }
 
     private DependencyInfo extractVersionInfoFromJson(String json) {
@@ -141,6 +147,11 @@ public class VersionComparator {
         } else {
             return new DependencyInfo(docsObject.getString(GROUP), docsObject.getString(ARTIFACT), docsObject.getString(VERSION));
         }
+    }
+
+    private boolean isNewerVersionAvailable(ComparableVersion latestVersionComparable, String currentVersion) {
+        ComparableVersion currentVersionComparable = new ComparableVersion(currentVersion);
+        return latestVersionComparable.compareTo(currentVersionComparable) > 0;
     }
 
     private boolean isPrereleaseVersionExcluded(boolean isExcluded, String latestVersion) {
