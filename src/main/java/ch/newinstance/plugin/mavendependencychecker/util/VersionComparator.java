@@ -57,7 +57,7 @@ public class VersionComparator {
                     }
                 }
 
-                if (isPrereleaseVersionExcluded(settings.isPrereleaseVersionsExcluded(), dependencyInfo.latestVersion())) {
+                if (isPrereleaseVersionExcluded(dependencyInfo.latestVersion())) {
                     continue;
                 }
 
@@ -85,7 +85,7 @@ public class VersionComparator {
                     continue;
                 }
 
-                if (isPrereleaseVersionExcluded(settings.isPrereleaseVersionsExcluded(), dependencyInfo.latestVersion())) {
+                if (isPrereleaseVersionExcluded(dependencyInfo.latestVersion())) {
                     continue;
                 }
 
@@ -154,8 +154,8 @@ public class VersionComparator {
         return latestVersionComparable.compareTo(currentVersionComparable) > 0;
     }
 
-    private boolean isPrereleaseVersionExcluded(boolean isExcluded, String latestVersion) {
-        return isExcluded && containsPrereleaseOrBuildVersion(latestVersion);
+    private boolean isPrereleaseVersionExcluded(String latestVersion) {
+        return settings.isPrereleaseVersionsExcluded() && containsPrereleaseOrBuildVersion(latestVersion);
     }
 
     private boolean containsPrereleaseOrBuildVersion(String latestVersion) {

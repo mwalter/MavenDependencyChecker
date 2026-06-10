@@ -28,6 +28,8 @@ class PomGeneratorTest {
 
         assertTrue(result.contains("dependencies"));
         assertTrue(result.contains("commons-lang3"));
+        assertTrue(result.contains("${commons-lang3.version}"));
+        assertTrue(result.contains("<commons-lang3.version>3.12.0</commons-lang3.version>"));
     }
 
     @Test
@@ -38,6 +40,8 @@ class PomGeneratorTest {
 
         assertTrue(result.contains("plugins"));
         assertTrue(result.contains("spring-boot-maven-plugin"));
+        assertTrue(result.contains("${spring-boot-maven-plugin.version}"));
+        assertTrue(result.contains("<spring-boot-maven-plugin.version>3.3.5</spring-boot-maven-plugin.version>"));
     }
 
 }

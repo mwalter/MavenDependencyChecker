@@ -14,6 +14,8 @@ import java.util.List;
 
 public class PomGenerator {
 
+    private static final String VERSION_POSTFIX = ".version";
+
     private final MavenXpp3Writer writer = new MavenXpp3Writer();
 
     private boolean existsBuildSection;
@@ -22,7 +24,8 @@ public class PomGenerator {
         Model model = new Model();
         model.setDescription("GENERATED FOR COPYING PURPOSE ONLY. DOES NOT REPLACE YOUR POM INTENTIONALLY.");
 
-        for (DependencyUpdateResult dependencyUpdateResult : dependenciesToUpdate) {
+        dependenciesToUpdate.forEach(dependencyUpdateResult -> {
+            createProperty(model, dependencyUpdateResult.getArtifactId(), dependencyUpdateResult.getLatestVersion());
             if (dependencyUpdateResult.isDependency()) {
                 model.addDependency(createDependency(dependencyUpdateResult));
             } else {
@@ -32,7 +35,7 @@ public class PomGenerator {
                 }
                 model.getBuild().getPlugins().add(createPlugin(dependencyUpdateResult));
             }
-        }
+        });
 
         StringWriter stringWriter = new StringWriter();
         try {
@@ -48,7 +51,7 @@ public class PomGenerator {
         Dependency dependency = new Dependency();
         dependency.setGroupId(dependencyUpdateResult.getGroupId());
         dependency.setArtifactId(dependencyUpdateResult.getArtifactId());
-        dependency.setVersion(dependencyUpdateResult.getLatestVersion());
+        dependency.setVersion("${" + dependencyUpdateResult.getArtifactId() + VERSION_POSTFIX + "}");
         return dependency;
     }
 
@@ -56,8 +59,12 @@ public class PomGenerator {
         Plugin plugin = new Plugin();
         plugin.setGroupId(dependencyUpdateResult.getGroupId());
         plugin.setArtifactId(dependencyUpdateResult.getArtifactId());
-        plugin.setVersion(dependencyUpdateResult.getLatestVersion());
+        plugin.setVersion("${" + dependencyUpdateResult.getArtifactId() + VERSION_POSTFIX + "}");
         return plugin;
+    }
+
+    private void createProperty(Model model, String artifactId, String version) {
+        model.getProperties().putIfAbsent(artifactId + VERSION_POSTFIX, version);
     }
 
 }
