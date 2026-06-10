@@ -12,15 +12,18 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupActivity;
+import com.intellij.openapi.startup.ProjectActivity;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.util.text.VersionComparatorUtil;
+import kotlin.Unit;
+import kotlin.coroutines.Continuation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class StartupNotification implements StartupActivity, DumbAware {
+public class StartupNotification implements ProjectActivity, DumbAware {
 
     @Override
-    public void runActivity(@NotNull Project project) {
+    public @Nullable Object execute(@NotNull Project project, @NotNull Continuation<? super Unit> continuation) {
         IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(PluginId.getId("ch.newinstance.plugin.mavendependencychecker"));
         MavenDependencyCheckerSettings settings = ApplicationManager.getApplication().getService(MavenDependencyCheckerSettings.class);
         String installedVersion = settings.getInstalledVersion();
@@ -35,6 +38,7 @@ public class StartupNotification implements StartupActivity, DumbAware {
             notification.notify(null);
             settings.setInstalledVersion(plugin.getVersion());
         }
+        return null;
     }
 
     private Notification createNotification() {
