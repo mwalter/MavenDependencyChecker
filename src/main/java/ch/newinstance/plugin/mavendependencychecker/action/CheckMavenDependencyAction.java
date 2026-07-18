@@ -61,17 +61,21 @@ public class CheckMavenDependencyAction extends AnAction {
 
         // read dependencies and plugins from POM file
         PsiFile pomFile = event.getData(CommonDataKeys.PSI_FILE);
-        DependencyParser parser = new DependencyParser(pomFile);
-        List<Dependency> mavenDependencies = parser.parseMavenDependencies();
-        List<Plugin> plugins = parser.parseMavenPlugins();
+        if (pomFile == null) {
+            Messages.showInfoMessage("The POM file was not found or could not be read.\nNothing to check.", "POM File Not Found");
+            return;
+        }
+
+        List<Dependency> mavenDependencies = DependencyParser.parseMavenDependencies(pomFile);
+        List<Plugin> plugins = DependencyParser.parseMavenPlugins(pomFile);
         if (mavenDependencies.isEmpty() && plugins.isEmpty()) {
             Messages.showInfoMessage("No Maven dependencies or plugins found in POM file.\nNothing to check.", "No Maven Project Dependencies");
             return;
         }
 
         // read dependencies and plugin from IntelliJ Maven model
-        List<MavenArtifact> moduleDependencies = parser.parseModuleDependencies();
-        List<MavenPlugin> mavenPlugins = parser.parseProjectPlugins();
+        List<MavenArtifact> moduleDependencies = DependencyParser.parseModuleDependencies(pomFile);
+        List<MavenPlugin> mavenPlugins = DependencyParser.parseProjectPlugins(pomFile);
         if (moduleDependencies.isEmpty() && mavenPlugins.isEmpty()) {
             Messages.showInfoMessage("No project dependency information found.\nNothing to check.", "No Project Dependencies");
             return;
@@ -90,7 +94,7 @@ public class CheckMavenDependencyAction extends AnAction {
         dependenciesToUpdate.addAll(versionComparator.comparePluginVersions(mavenPlugins, plugins));
 
         if (dependenciesToUpdate.isEmpty()) {
-            Messages.showInfoMessage("All project dependencies use the latest version available.\nHappy coding!", "Everything Up To Date");
+            Messages.showInfoMessage("All project dependencies use the latest version available.\nHappy coding!", "Everything up to Date");
             return;
         }
 

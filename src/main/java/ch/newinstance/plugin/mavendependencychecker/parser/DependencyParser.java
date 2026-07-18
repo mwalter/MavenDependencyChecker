@@ -20,23 +20,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-public class DependencyParser {
+public final class DependencyParser {
 
-    private final PsiFile pomFile;
+    private static final MavenXpp3Reader MAVEN_XPP_3_READER = new MavenXpp3Reader();
 
-    private final MavenXpp3Reader reader = new MavenXpp3Reader();
-
-    public DependencyParser(PsiFile pomFile) {
-        this.pomFile = pomFile;
-    }
-
-    public List<Dependency> parseMavenDependencies() {
+    public static List<Dependency> parseMavenDependencies(PsiFile pomFile) {
         if (StringUtils.isBlank(pomFile.getText())) {
             return Collections.emptyList();
         }
 
         try {
-            Model model = reader.read(new StringReader(pomFile.getText()));
+            Model model = MAVEN_XPP_3_READER.read(new StringReader(pomFile.getText()));
             List<Dependency> dependencies = new ArrayList<>(model.getDependencies());
 
             if (model.getDependencyManagement() != null) {
@@ -49,17 +43,17 @@ public class DependencyParser {
         }
     }
 
-    public List<MavenArtifact> parseModuleDependencies() {
+    public static List<MavenArtifact> parseModuleDependencies(PsiFile pomFile) {
         List<MavenProject> mavenProjects = MavenProjectsManager.getInstance(pomFile.getProject()).getProjects();
         if (mavenProjects.size() > 1) {
             // handle multimodule project
-            Optional<MavenProject> selectedProject = getMavenProject(mavenProjects);
+            Optional<MavenProject> selectedProject = getMavenProject(mavenProjects, pomFile);
             return selectedProject.map(MavenProject::getDependencies).orElse(Collections.emptyList());
         }
         return mavenProjects.getFirst().getDependencies();
     }
 
-    public List<Plugin> parseMavenPlugins() {
+    public static List<Plugin> parseMavenPlugins(PsiFile pomFile) {
         if (StringUtils.isBlank(pomFile.getText())) {
             return Collections.emptyList();
         }
@@ -67,7 +61,7 @@ public class DependencyParser {
         List<Plugin> plugins = new ArrayList<>();
 
         try {
-            Model model = reader.read(new StringReader(pomFile.getText()));
+            Model model = MAVEN_XPP_3_READER.read(new StringReader(pomFile.getText()));
 
             if (model.getBuild() != null) {
                 plugins.addAll(model.getBuild().getPlugins());
@@ -83,17 +77,17 @@ public class DependencyParser {
         return plugins;
     }
 
-    public List<MavenPlugin> parseProjectPlugins() {
+    public static List<MavenPlugin> parseProjectPlugins(PsiFile pomFile) {
         List<MavenProject> mavenProjects = MavenProjectsManager.getInstance(pomFile.getProject()).getProjects();
         if (mavenProjects.size() > 1) {
             // handle multimodule project
-            Optional<MavenProject> selectedProject = getMavenProject(mavenProjects);
+            Optional<MavenProject> selectedProject = getMavenProject(mavenProjects, pomFile);
             return selectedProject.map(MavenProject::getPlugins).orElse(Collections.emptyList());
         }
         return mavenProjects.getFirst().getPlugins();
     }
 
-    private List<Dependency> parsePropertyPlaceholder(Model model, List<Dependency> dependencies) {
+    private static List<Dependency> parsePropertyPlaceholder(Model model, List<Dependency> dependencies) {
         Properties properties = model.getProperties();
         if (properties.isEmpty()) {
             return dependencies;
@@ -120,7 +114,7 @@ public class DependencyParser {
         return dependencies;
     }
 
-    private Optional<MavenProject> getMavenProject(List<MavenProject> mavenProjects) {
+    private static Optional<MavenProject> getMavenProject(List<MavenProject> mavenProjects, PsiFile pomFile) {
         String projectName = pomFile.getParent().getName(); // the POM file always has a parent
         for (MavenProject mavenProject : mavenProjects) {
             if (projectName.equals(mavenProject.getDisplayName())) {

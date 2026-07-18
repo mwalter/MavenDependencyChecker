@@ -5,7 +5,6 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,14 +28,11 @@ class DependencyParserTest {
     @Mock
     private PsiFile pomFile;
 
-    @InjectMocks
-    private DependencyParser parser;
-
     @Test
     void parseMavenDependencies_emptyPom_shouldReturnEmptyCollection() {
         when(pomFile.getText()).thenReturn("");
 
-        List<Dependency> result = parser.parseMavenDependencies();
+        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
         assertTrue(result.isEmpty());
     }
 
@@ -44,7 +40,7 @@ class DependencyParserTest {
     void parseMavenDependencies_someDependencies_shouldReturnDependencies() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = parser.parseMavenDependencies();
+        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
         assertFalse(result.isEmpty());
         assertEquals(8, result.size());
     }
@@ -53,7 +49,7 @@ class DependencyParserTest {
     void parseMavenDependencies_dependencyVersionWithPlaceholder_shouldReturnVersionFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = parser.parseMavenDependencies();
+        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
         Optional<Dependency> dependencyWithReplacedVersion = result.stream()
                 .filter(dependency -> dependency.getArtifactId().equals("spring-cloud-dependencies"))
                 .findFirst();
@@ -65,7 +61,7 @@ class DependencyParserTest {
     void parseMavenDependencies_dependencyGropudIdWithPlaceholder_shouldReturnGroupNameFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = parser.parseMavenDependencies();
+        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
         Optional<Dependency> dependencyWithReplacedGroupId = result.stream()
                 .filter(dependency -> dependency.getArtifactId().equals("lombok"))
                 .findFirst();
@@ -77,7 +73,7 @@ class DependencyParserTest {
     void parseMavenDependencies_dependencyArtifactIdWithPlaceholder_shouldReturnArtifactNameFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = parser.parseMavenDependencies();
+        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
         Optional<Dependency> dependencyWithReplacedArtifactId = result.stream()
                 .filter(dependency -> dependency.getGroupId().equals("org.apache.commons"))
                 .findFirst();
@@ -89,7 +85,7 @@ class DependencyParserTest {
     void parseMavenPlugins_emptyPom_shouldReturnEmptyCollection() {
         when(pomFile.getText()).thenReturn("");
 
-        List<Plugin> result = parser.parseMavenPlugins();
+        List<Plugin> result = DependencyParser.parseMavenPlugins(pomFile);
         assertTrue(result.isEmpty());
     }
 
@@ -97,7 +93,7 @@ class DependencyParserTest {
     void parseMavenPlugins_somePlugins_shouldReturnPlugins() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Plugin> result = parser.parseMavenPlugins();
+        List<Plugin> result = DependencyParser.parseMavenPlugins(pomFile);
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
     }
