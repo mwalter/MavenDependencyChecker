@@ -2,6 +2,7 @@ package ch.newinstance.plugin.mavendependencychecker.action;
 
 import ch.newinstance.plugin.mavendependencychecker.client.MavenSearchClient;
 import ch.newinstance.plugin.mavendependencychecker.config.MavenDependencyCheckerSettings;
+import ch.newinstance.plugin.mavendependencychecker.model.DependencyParseResult;
 import ch.newinstance.plugin.mavendependencychecker.model.DependencyUpdateResult;
 import ch.newinstance.plugin.mavendependencychecker.parser.DependencyParser;
 import ch.newinstance.plugin.mavendependencychecker.ui.ResultDialog;
@@ -22,11 +23,9 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.util.ui.UIUtil;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.model.MavenArtifact;
-import org.jetbrains.idea.maven.model.MavenPlugin;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -66,32 +65,29 @@ public class CheckMavenDependencyAction extends AnAction {
             return;
         }
 
-        List<Dependency> mavenDependencies = DependencyParser.parseMavenDependencies(pomFile);
-        List<Plugin> plugins = DependencyParser.parseMavenPlugins(pomFile);
-        if (mavenDependencies.isEmpty() && plugins.isEmpty()) {
+        List<MavenProject> mavenProjects = MavenProjectsManager.getInstance(pomFile.getProject()).getProjects();
+        DependencyParseResult dependencyParseResult = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        if (dependencyParseResult.dependencies().isEmpty() && dependencyParseResult.plugins().isEmpty()) {
             Messages.showInfoMessage("No Maven dependencies or plugins found in POM file.\nNothing to check.", "No Maven Project Dependencies");
             return;
         }
 
-        // read dependencies and plugin from IntelliJ Maven model
-        List<MavenArtifact> moduleDependencies = DependencyParser.parseModuleDependencies(pomFile);
-        List<MavenPlugin> mavenPlugins = DependencyParser.parseProjectPlugins(pomFile);
-        if (moduleDependencies.isEmpty() && mavenPlugins.isEmpty()) {
+        if (dependencyParseResult.moduleDependencies().isEmpty() && dependencyParseResult.projectPlugins().isEmpty()) {
             Messages.showInfoMessage("No project dependency information found.\nNothing to check.", "No Project Dependencies");
             return;
         }
 
         // fetch latest dependency and plugin versions from Maven Central
         QueryBuilder queryBuilder = new QueryBuilder();
-        List<String> queries = queryBuilder.buildDependencyQueries(mavenDependencies);
-        queries.addAll(queryBuilder.buildPluginQueries(plugins));
+        List<String> queries = queryBuilder.buildDependencyQueries(dependencyParseResult.dependencies());
+        queries.addAll(queryBuilder.buildPluginQueries(dependencyParseResult.plugins()));
         MavenSearchClient searchClient = new MavenSearchClient();
         List<String> queryResults = searchClient.executeSearchQueries(queries);
 
         // compare current dependencies and plugins with latest version
         VersionComparator versionComparator = new VersionComparator(queryResults, settings);
-        List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareDependencyVersions(moduleDependencies, mavenDependencies);
-        dependenciesToUpdate.addAll(versionComparator.comparePluginVersions(mavenPlugins, plugins));
+        List<DependencyUpdateResult> dependenciesToUpdate = versionComparator.compareDependencyVersions(dependencyParseResult.moduleDependencies(), dependencyParseResult.dependencies());
+        dependenciesToUpdate.addAll(versionComparator.comparePluginVersions(dependencyParseResult.projectPlugins(), dependencyParseResult.plugins()));
 
         if (dependenciesToUpdate.isEmpty()) {
             Messages.showInfoMessage("All project dependencies use the latest version available.\nHappy coding!", "Everything up to Date");

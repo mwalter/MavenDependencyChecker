@@ -1,8 +1,10 @@
 package ch.newinstance.plugin.mavendependencychecker.parser;
 
+import ch.newinstance.plugin.mavendependencychecker.model.DependencyParseResult;
 import com.intellij.psi.PsiFile;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Plugin;
+import org.jetbrains.idea.maven.project.MavenProject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -28,29 +30,41 @@ class DependencyParserTest {
     @Mock
     private PsiFile pomFile;
 
+    @Mock
+    private List<MavenProject> mavenProjects;
+
+    @Mock
+    private MavenProject mavenProject;
+
+    @BeforeEach
+    void setup() {
+        when(mavenProjects.size()).thenReturn(1);
+        when(mavenProjects.getFirst()).thenReturn(mavenProject);
+    }
+
     @Test
     void parseMavenDependencies_emptyPom_shouldReturnEmptyCollection() {
         when(pomFile.getText()).thenReturn("");
 
-        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
-        assertTrue(result.isEmpty());
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        assertTrue(result.dependencies().isEmpty());
     }
 
     @Test
     void parseMavenDependencies_someDependencies_shouldReturnDependencies() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
-        assertFalse(result.isEmpty());
-        assertEquals(8, result.size());
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        assertFalse(result.dependencies().isEmpty());
+        assertEquals(8, result.dependencies().size());
     }
 
     @Test
     void parseMavenDependencies_dependencyVersionWithPlaceholder_shouldReturnVersionFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
-        Optional<Dependency> dependencyWithReplacedVersion = result.stream()
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        Optional<Dependency> dependencyWithReplacedVersion = result.dependencies().stream()
                 .filter(dependency -> dependency.getArtifactId().equals("spring-cloud-dependencies"))
                 .findFirst();
         assertTrue(dependencyWithReplacedVersion.isPresent());
@@ -61,8 +75,8 @@ class DependencyParserTest {
     void parseMavenDependencies_dependencyGropudIdWithPlaceholder_shouldReturnGroupNameFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
-        Optional<Dependency> dependencyWithReplacedGroupId = result.stream()
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        Optional<Dependency> dependencyWithReplacedGroupId = result.dependencies().stream()
                 .filter(dependency -> dependency.getArtifactId().equals("lombok"))
                 .findFirst();
         assertTrue(dependencyWithReplacedGroupId.isPresent());
@@ -73,8 +87,8 @@ class DependencyParserTest {
     void parseMavenDependencies_dependencyArtifactIdWithPlaceholder_shouldReturnArtifactNameFromPropertiesSection() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Dependency> result = DependencyParser.parseMavenDependencies(pomFile);
-        Optional<Dependency> dependencyWithReplacedArtifactId = result.stream()
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        Optional<Dependency> dependencyWithReplacedArtifactId = result.dependencies().stream()
                 .filter(dependency -> dependency.getGroupId().equals("org.apache.commons"))
                 .findFirst();
         assertTrue(dependencyWithReplacedArtifactId.isPresent());
@@ -85,17 +99,17 @@ class DependencyParserTest {
     void parseMavenPlugins_emptyPom_shouldReturnEmptyCollection() {
         when(pomFile.getText()).thenReturn("");
 
-        List<Plugin> result = DependencyParser.parseMavenPlugins(pomFile);
-        assertTrue(result.isEmpty());
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        assertTrue(result.plugins().isEmpty());
     }
 
     @Test
     void parseMavenPlugins_somePlugins_shouldReturnPlugins() {
         when(pomFile.getText()).thenReturn(readPomFile());
 
-        List<Plugin> result = DependencyParser.parseMavenPlugins(pomFile);
-        assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
+        DependencyParseResult result = DependencyParser.parseDependencies(pomFile, mavenProjects);
+        assertFalse(result.plugins().isEmpty());
+        assertEquals(1, result.plugins().size());
     }
 
 
